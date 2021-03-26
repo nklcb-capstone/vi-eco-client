@@ -1,6 +1,7 @@
 import React from 'react';
 import logo from './logo.png';
 import './App.scss';
+import Test from 'components/Test';
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
           Notion
         </a>
       </header>
+      <Test />
     </div>
   );
 }
