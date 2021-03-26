@@ -1,6 +1,6 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import logo from './logo.png';
+import './App.scss';
 
 function App() {
   return (
@@ -10,13 +10,16 @@ function App() {
         <p>
           Edit <code>src/App.tsx</code> and save to reload.
         </p>
+        <a className="App-link" href="https://github.com/nklcb-capstone" target="_blank" rel="noopener noreferrer">
+          Github Repository
+        </a>
         <a
           className="App-link"
-          href="https://reactjs.org"
+          href="https://www.notion.so/e4b2f84dd0124772af02a8716350b218"
           target="_blank"
           rel="noopener noreferrer"
         >
-          Learn React
+          Notion
         </a>
       </header>
     </div>
