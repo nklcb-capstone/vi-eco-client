@@ -1,0 +1,4 @@
+**/registerServiceWorker.js
+**/__tests__/**
+**/serviceWorker.ts
+**/setupTests.ts
