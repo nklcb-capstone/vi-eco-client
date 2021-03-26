@@ -1,3 +1,6 @@
+# vi-eco
+Electrical/hydrogen charging stations and information provision projects
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
