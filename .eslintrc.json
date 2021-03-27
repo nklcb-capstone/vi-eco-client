@@ -29,6 +29,7 @@
     }
   },
   "rules": {
+    "prefer-const" : "warn",
     "no-undef": "warn",
     "no-unused-vars": "warn",
     "react/jsx-no-duplicate-props": "warn",
@@ -48,4 +49,5 @@
       }
     }
   ]
+  
 }

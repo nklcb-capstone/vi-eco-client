@@ -2,6 +2,7 @@ import React from 'react';
 import logo from './logo.png';
 import './App.scss';
 import Test from 'components/Test';
+import Map from 'components/kakaoAPI/Map';
 
 function App() {
   return (
@@ -24,6 +25,8 @@ function App() {
         </a>
       </header>
       <Test />
+
+      <Map></Map>
     </div>
   );
 }
