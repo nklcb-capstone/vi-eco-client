@@ -26,6 +26,7 @@ function App() {
       </header>
       <Test /> */}
 
+      {/* 지도 API 컴포넌트 */}
       <Map></Map>
     </div>
   );
