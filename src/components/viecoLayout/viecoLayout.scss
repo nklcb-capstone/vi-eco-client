@@ -1,0 +1,40 @@
+@import '~antd/dist/antd.css';
+
+#components-layout-demo-fixed .logo {
+  float: left;
+  width: 120px;
+  height: 31px;
+  margin: 16px 24px 16px 0;
+  background: rgba(255, 255, 255, 0.2);
+}
+.site-layout .site-layout-background {
+  background: #fff;
+}
+
+.menubar {
+    overflow: hidden;
+    background-color: #333;
+    position: fixed;
+    bottom: 0;
+    width: 100%
+}
+
+.menubar span {
+    float: left;
+    display: block;
+    color: #f2f2f2;
+    text-align: center;
+    padding : 14px 16px;
+    text-decoration: none;
+    font-size: 1rem;
+}
+
+.menubar span:hover {
+    background: #ddd;
+    color: #111;
+}
+
+#modchange {
+    float: right;
+    background-color: #40e0d0;
+}
