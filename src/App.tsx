@@ -7,8 +7,13 @@ import Layout from 'components/viecoLayout/viecoLayout';
 function App() {
   return (
     <div className="App">
-      <Layout></Layout>
-      <Map></Map>
+      <header></header>
+      <body>
+        <Map></Map>
+      </body>
+      <footer>
+        <Layout></Layout>
+      </footer>
     </div>
   );
 }
