@@ -72,7 +72,7 @@ const Map: React.FC = () => {
 
   return (
     <div className="Map">
-      <div id="map" style={{ width: '100vw', height: '100vh' }} />
+      <div id="map" style={{ width: '100vw', height: 'calc(100vh - 53px)'}} />
     </div>
   );
 };
