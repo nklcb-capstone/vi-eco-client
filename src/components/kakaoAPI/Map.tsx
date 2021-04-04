@@ -42,13 +42,23 @@ const Map: React.FC = () => {
       map: map,
       position: markerPosition,
     });
+
     //인포윈도우 띄우기
     let infowindow = new kakao.maps.InfoWindow({
-      content: '서울역',
+      //이부분에 윈도우 정보 html로 작성
+      content: '<div>서울역</div><div>안녕</div>',
+      //인포윈도우 클릭시 X창뜨게하기
+      removable: true,
     });
-    //윈포윈도우에 이벤트 적용하기
-    kakao.maps.event.addListener(marker, 'mouseover', makeOverListener(map, marker, infowindow));
-    kakao.maps.event.addListener(marker, 'mouseout', makeOutListener(infowindow));
+
+    //윈포윈도우에 mouseover, out 이벤트
+    //   kakao.maps.event.addListener(marker, 'mouseover', makeOverListener(map, marker, infowindow));
+    //    kakao.maps.event.addListener(marker, 'mouseout', makeOutListener(infowindow));
+
+    //윈포윈도우 클릭이벤트
+    kakao.maps.event.addListener(marker, 'click', function (mouseEvent: any) {
+      infowindow.open(map, marker);
+    });
 
     //markerDate에 있는 마커 여러개 생성 및 표시
     markerdata.map((el) => {
