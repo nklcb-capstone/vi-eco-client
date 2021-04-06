@@ -12,29 +12,114 @@
 }
 
 .menubar {
+  overflow: hidden;
+  background-color: #333;
+  position: fixed;
+  bottom: 0;
+  width: 100vw;
+}
+
+.menubar span {
+  float: left;
+  display: block;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 1rem;
+}
+
+.menubar span:hover {
+  background: #ddd;
+  color: #111;
+}
+
+#modchange {
+  float: right;
+  background-color: #40e0d0;
+  height: 53px;
+}
+
+//MOST OF ANDROID PHONES
+@media only screen and (min-device-width: 360px) and (max-device-width: 374px) {
+  .menubar {
     overflow: hidden;
     background-color: #333;
     position: fixed;
     bottom: 0;
     width: 100vw;
-}
-
-.menubar span {
+    height: 53px;
+  }
+  .menubar span {
     float: left;
     display: block;
     color: #f2f2f2;
     text-align: center;
-    padding : 14px 16px;
+    padding: 17px 13px;
     text-decoration: none;
-    font-size: 1rem;
+    font-size: 12px;
+  }
 }
 
-.menubar span:hover {
-    background: #ddd;
-    color: #111;
+//iPhone 6/7/8 & iPhone X/XS & iPhone 12 & iPhone 11 Pro 
+@media only screen and (min-device-width: 375px) and (max-device-width: 413px) {
+  .menubar {
+    overflow: hidden;
+    background-color: #333;
+    position: fixed;
+    bottom: 0;
+    width: 100vw;
+    height: 53px;
+  }
+  .menubar span {
+    float: left;
+    display: block;
+    color: #f2f2f2;
+    text-align: center;
+    padding: 17px 16px;
+    text-decoration: none;
+    font-size: 11px;
+  }
 }
 
-#modchange {
-    float: right;
-    background-color: #40e0d0;
+//iPhone 6/7/8 Plus & iPhone XR/XS Max & iPhone 11/11 Pro Max & iPhone 12 Pro Max
+@media only screen and (min-device-width: 414px) and (max-device-width: 439px) {
+  .menubar {
+    overflow: hidden;
+    background-color: #333;
+    position: fixed;
+    bottom: 0;
+    width: 100vw;
+    height: 53px;
+  }
+  .menubar span {
+    float: left;
+    display: block;
+    color: #f2f2f2;
+    text-align: center;
+    padding: 17px 16px;
+    text-decoration: none;
+    font-size: 13px;
+  }
+}
+
+//Galaxy S20/S20+/S20 Ultra
+@media only screen and (min-device-width: 480px) and (max-device-width: 500px) {
+  .menubar {
+    overflow: hidden;
+    background-color: #333;
+    position: fixed;
+    bottom: 0;
+    width: 100vw;
+  }
+  
+  .menubar span {
+    float: left;
+    display: block;
+    color: #f2f2f2;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 16px;
+  }
 }
