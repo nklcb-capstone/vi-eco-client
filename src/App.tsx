@@ -7,6 +7,7 @@ import Layout from 'components/viecoLayout/viecoLayout';
 function App() {
   return (
     <div className="App">
+      //레이아웃 적용 버전
       <header></header>
       <body>
         <Map></Map>
