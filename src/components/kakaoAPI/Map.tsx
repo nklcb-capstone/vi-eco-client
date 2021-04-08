@@ -1,5 +1,6 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { markerdata } from './markerDate';
+import './Map.scss';
 declare global {
   interface Window {
     kakao: any;
@@ -8,71 +9,70 @@ declare global {
 
 const { kakao } = window;
 const Map: React.FC = () => {
+  const [infowindows, Setinfowindows]: any = useState([]);
+
+  //let infowindowList: any = [];
+
   useEffect(() => {
     mapscript();
   }, []);
 
-  // 인포윈도우를 표시하는 클로저를 만드는 함수입니다
-  const makeOverListener: any = (map: any, marker: any, infowindow: any) => {
-    return function () {
-      infowindow.open(map, marker);
-    };
-  };
-
-  // 인포윈도우를 닫는 클로저를 만드는 함수입니다
-  const makeOutListener: any = (infowindow: any) => {
-    return function () {
-      infowindow.close();
-    };
+  const closeInfoWindow = () => {
+    console.log(infowindows);
+    infowindows.forEach((el: any) => {
+      //마커 닫기
+      el.close();
+    });
   };
 
   const mapscript = () => {
     // kaka API 띄우기
-    let container = document.getElementById('map');
-    let options = {
+    const container = document.getElementById('map');
+
+    const options = {
       //지도 기본 위치값 서울역 좌표로 지정
       center: new window.kakao.maps.LatLng(37.555178, 126.970756),
       level: 5,
     };
-    let map: any = new window.kakao.maps.Map(container, options);
-
-    // 마커 한개 생성 및 띄우기 서울역
-    let markerPosition = new kakao.maps.LatLng(37.555163, 126.970768);
-    let marker = new kakao.maps.Marker({
-      map: map,
-      position: markerPosition,
-    });
-
-    //인포윈도우 띄우기
-    let infowindow = new kakao.maps.InfoWindow({
-      //이부분에 윈도우 정보 html로 작성
-      content: '<div>서울역</div><div>안녕</div>',
-      //인포윈도우 클릭시 X창뜨게하기
-      removable: true,
-    });
-
-    //윈포윈도우에 mouseover, out 이벤트
-    //   kakao.maps.event.addListener(marker, 'mouseover', makeOverListener(map, marker, infowindow));
-    //    kakao.maps.event.addListener(marker, 'mouseout', makeOutListener(infowindow));
-
-    //윈포윈도우 클릭이벤트
-    kakao.maps.event.addListener(marker, 'click', function (mouseEvent: any) {
-      infowindow.open(map, marker);
-    });
+    const map: any = new window.kakao.maps.Map(container, options);
 
     //markerDate에 있는 마커 여러개 생성 및 표시
-    markerdata.map((el) => {
-      new kakao.maps.Marker({
+    markerdata.forEach((el) => {
+      const test = new kakao.maps.Marker({
         map: map,
         position: new kakao.maps.LatLng(el.lat, el.lng),
         title: el.title,
+        clickable: true,
       });
+
+      const infowindow = new kakao.maps.InfoWindow({
+        //이부분에 윈도우 정보 html로 작성
+        content: `<div class="wrap">
+        <div class="title">${el.title}</div>  
+        <div class="title">주소 : ${el.address}</div>  
+        <div class="title">전화 : ${el.tell}</div>  
+    </div>`,
+        //인포윈도우 클릭시 X창뜨게하기
+        removable: true,
+      });
+
+      Setinfowindows([...infowindows, infowindow]);
+      //infowindowList.push(infowindow);
+
+      //클릭이벤트 등록
+      kakao.maps.event.addListener(test, 'click', function () {
+        //해당 마커외에 닫는 메소드
+        closeInfoWindow();
+        //마커 정보띄우기
+        infowindow.open(map, test);
+      });
+      test.setMap(map);
     });
   };
 
   return (
     <div className="Map">
-      <div id="map" style={{ width: '100vw', height: 'calc(100vh - 53px)'}} />
+      <div id="map" style={{ width: '100vw', height: 'calc(100vh - 53px)' }} />
     </div>
   );
 };
