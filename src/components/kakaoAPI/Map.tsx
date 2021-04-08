@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { markerdata } from './markerDate';
+import './Map.scss';
 declare global {
   interface Window {
     kakao: any;
@@ -46,7 +47,11 @@ const Map: React.FC = () => {
 
       const infowindow = new kakao.maps.InfoWindow({
         //이부분에 윈도우 정보 html로 작성
-        content: `<div>${el.title}</div>`,
+        content: `<div class="wrap">
+        <div class="title">${el.title}</div>  
+        <div class="title">주소 : ${el.address}</div>  
+        <div class="title">전화 : ${el.tell}</div>  
+    </div>`,
         //인포윈도우 클릭시 X창뜨게하기
         removable: true,
       });
