@@ -5,7 +5,7 @@ import Test from 'components/Test';
 import Map from 'components/kakaoAPI/Map';
 import Layout from 'components/viecoLayout/viecoLayout';
 
-function App() {
+function App(): React.ReactElement {
   return (
     <div className="App">
       {/* //레이아웃 적용 버전 */}
