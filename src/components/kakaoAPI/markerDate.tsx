@@ -1,4 +1,6 @@
-export const markerdata = [
+import { MapMarkerInfo } from 'common/types';
+
+export const markerdata: MapMarkerInfo[] = [
   {
     id: 1,
     title: '현대자동차㈜ 환경기술연구소',
