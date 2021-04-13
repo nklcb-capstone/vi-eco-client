@@ -35,8 +35,6 @@ const mapOptions = {
 const Map: React.FC = () => {
   const [infowindows, Setinfowindows]: any = useState([]);
 
-  //let infowindowList: any = [];
-
   useEffect(() => {
     setTimeout(() => {
       mapscript();
@@ -48,15 +46,12 @@ const Map: React.FC = () => {
 
   const mapContainerRef = React.createRef<HTMLDivElement>();
 
-  //// const [infowindow, setInfowindow] = usestate<any>()
-
   const infowindow = useMemo(() => {
     //// return new kakao.maps.InfoWindow({ zIndex: 1 });
     return new kakao.maps.InfoWindow({ content: '<div>서울역</div><div>안녕</div>', removable: true });
   }, []);
 
   const closeInfoWindow = () => {
-    console.log(infowindows);
     infowindows.forEach((el: any) => {
       //마커 닫기
       el.close();
@@ -65,27 +60,7 @@ const Map: React.FC = () => {
 
   const [map, setMap] = useState<any>();
 
-  //// const map = useMemo(() => {
-  ////   console.log('usememo before map, mapContainer, ', mapContainerRef.current);
-  ////   let map: any;
-  ////   try {
-  ////     map = new kakao.maps.Map(mapContainerRef.current, mapOptions);
-  ////   } catch (error) {
-  ////     console.log('usememo map error, ', error);
-  ////   }
-  ////   console.log('usememo after map');
-  ////   return map;
-  //// }, [mapContainerRef.current]);
-
   const [ps, setPs] = useState<any>();
-
-  //// const ps = useMemo(() => {
-  ////   console.log('usememo ps');
-  ////   console.log('kakao.maps, ', kakao.maps);
-  ////   console.log('kakao.maps.services, ', kakao.maps.services);
-  ////   console.log('kakao.maps.services.Places, ', kakao.maps.services.Places);
-  ////   return new kakao.maps.services.Places();
-  //// }, []);
 
   // 인포윈도우를 표시하는 클로저를 만드는 함수입니다
   const makeOverListener: any = (map: any, marker: any, infowindow: any) => {
@@ -105,55 +80,11 @@ const Map: React.FC = () => {
     // kaka API 띄우기
 
     setMap(() => {
-      console.log('mapContainerRef.current, ', mapContainerRef.current);
       const map = new kakao.maps.Map(mapContainerRef.current, mapOptions);
 
       setPs(() => {
-        console.log('usememo ps');
-        console.log('kakao.maps, ', kakao.maps);
-        console.log('kakao.maps.services, ', kakao.maps.services);
-        console.log('kakao.maps.services.Places, ', kakao.maps.services.Places);
         return new kakao.maps.services.Places();
       });
-
-      // // 마커 한개 생성 및 띄우기 서울역
-      // const markerPosition = new kakao.maps.LatLng(37.555163, 126.970768);
-      // const marker = new kakao.maps.Marker({
-      //   map: map,
-      //   position: markerPosition,
-      // });
-
-      // //인포윈도우 띄우기
-      // const infowindow = new kakao.maps.InfoWindow({
-      //   //이부분에 윈도우 정보 html로 작성
-      //   content: '<div>서울역</div><div>안녕</div>',
-      //   //인포윈도우 클릭시 X창뜨게하기
-      //   removable: true,
-      // });
-
-      // // 윈포윈도우에 mouseover, out 이벤트
-      // kakao.maps.event.addListener(marker, 'mouseover', makeOverListener(map, marker, infowindow));
-      // kakao.maps.event.addListener(marker, 'mouseout', makeOutListener(infowindow));
-
-      // //윈포윈도우 클릭이벤트
-      // kakao.maps.event.addListener(marker, 'click', (mouseEvent: any) => {
-      //   infowindow.open(map, marker);
-      // });
-
-      // //markerDate에 있는 마커 여러개 생성 및 표시
-      // markerdata.forEach((el) => {
-      //   new kakao.maps.Marker({
-      //     map: map,
-      //     position: new kakao.maps.LatLng(el.lat, el.lng),
-      //     title: el.title,
-      //   });
-      // });
-
-      // return map;
-
-      //
-      //
-      //
 
       //markerDate에 있는 마커 여러개 생성 및 표시
       markerdata.forEach((el: any) => {
@@ -176,7 +107,6 @@ const Map: React.FC = () => {
         });
 
         Setinfowindows([...infowindows, infowindow]);
-        //infowindowList.push(infowindow);
 
         //클릭이벤트 등록
         kakao.maps.event.addListener(test, 'click', function () {
@@ -192,17 +122,9 @@ const Map: React.FC = () => {
     });
   };
 
-  console.log('map, ', map);
-
-  const searchScript = () => {
-    // 장소 검색 객체
-  };
-
   // 검색 결과 목록과 마커를 표출하는 함수입니다
   const displayPlaces = (places: any) => {
-    console.log('displayplaces, ', places);
     const listEl = document.getElementById('placesList');
-    console.log('listEl, ', listEl);
     const fragment = document.createDocumentFragment();
     const bounds = new kakao.maps.LatLngBounds();
     const listStr = '';
@@ -257,7 +179,6 @@ const Map: React.FC = () => {
 
   // 검색결과 항목을 Element로 반환하는 함수입니다
   function getListItem(index: number, places: any) {
-    // console.log('getlistitem, ', index, places);
     const el = document.createElement('li');
     let itemStr =
       '<span class="markerbg marker_' +
@@ -290,7 +211,6 @@ const Map: React.FC = () => {
 
   // 마커를 생성하고 지도 위에 마커를 표시하는 함수입니다
   function addMarker(position: any, idx: number, title = '') {
-    console.log('addmarker, ', position, idx);
     const imageSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_number_blue.png'; // 마커 이미지 url, 스프라이트 이미지를 씁니다
     const imageSize = new kakao.maps.Size(36, 37); // 마커 이미지의 크기
     const imgOptions = {
@@ -320,7 +240,6 @@ const Map: React.FC = () => {
 
   // 검색결과 목록 하단에 페이지번호를 표시는 함수입니다
   function displayPagination(pagination: any) {
-    console.log('displaypagination, ', pagination);
     const paginationEl = document.getElementById('pagination');
     const fragment = document.createDocumentFragment();
     let i;
@@ -352,7 +271,6 @@ const Map: React.FC = () => {
 
   // 장소검색이 완료됐을 때 호출되는 콜백함수 입니다
   const placesSearchCB = (data: any, status: any, pagination: any) => {
-    console.log('placessearchcb, ', placesSearchCB);
     if (status === kakao.maps.services.Status.OK) {
       // 정상적으로 검색이 완료됐으면
       // 검색 목록과 마커를 표출합니다
@@ -386,7 +304,6 @@ const Map: React.FC = () => {
   // 검색결과 목록 또는 마커를 클릭했을 때 호출되는 함수입니다
   // 인포윈도우에 장소명을 표시합니다
   const displayInfowindow = (marker: any, title: any) => {
-    console.log('displayinfowindow, ', displayInfowindow);
     const content = '<div style="padding:5px;z-index:1;">' + title + '</div>';
 
     infowindow.setContent(content);
@@ -394,13 +311,10 @@ const Map: React.FC = () => {
   };
 
   const removeAllChildNodes = (el: any) => {
-    console.log('removeallchildnodes', el);
     while (el.hasChildNodes()) {
       el.removeChild(el.lastChild);
     }
   };
-
-  console.log('render,', mapContainerRef);
 
   return (
     <div className={cssRules.Map}>
