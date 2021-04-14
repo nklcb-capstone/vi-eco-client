@@ -6,6 +6,10 @@ import './Map.scss';
 import { Button, Input, Form } from 'antd';
 
 import cssRules from './Map.module.scss';
+import api from 'common/api/api';
+import { EV } from 'common/types';
+
+const imageSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png';
 
 //
 // Declaration for Kakao
@@ -315,6 +319,62 @@ const Map: React.FC = () => {
       el.removeChild(el.lastChild);
     }
   };
+
+  //
+  // EV list
+  //
+
+  const [evs, setEvs] = useState<EV[]>([]);
+
+  const loadEvs = async () => {
+    const res = await api({ url: '/car/electric/station', params: { numOfRows: 50, pageNo: 1 } });
+    const next: typeof evs = res?.data?.response?.body?.items?.item;
+    console.log({ next });
+    setEvs(next);
+  };
+
+  useEffect(() => {
+    loadEvs();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const setEvMarkers = () => {
+    console.log({ evs });
+
+    evs.forEach((ev: EV) => {
+      const imageSize = new kakao.maps.Size(24, 35);
+      const markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
+      const marker = new kakao.maps.Marker({
+        map: map,
+        position: new kakao.maps.LatLng(ev.lat, ev.lng),
+        title: ev.statNm,
+        clickable: true,
+        image: markerImage,
+      });
+      const infoWindow = new kakao.maps.InfoWindow({
+        content: `<div style="display: flex; flex-flow: column; min-width: 350px;">
+        <div>전기차충전소</div>
+      <div class="title">${ev.statNm}</div>  
+      <div class="title">${ev.addr}</div>  
+      <div class="title">${ev.useTime}</div>  
+  </div>`,
+        removable: true,
+      });
+      marker.setMap(map);
+      kakao.maps.event.addListener(marker, 'click', function () {
+        infoWindow.open(map, marker);
+      });
+    });
+  };
+
+  useEffect(() => {
+    setEvMarkers();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [evs]);
+
+  //
+  // Render
+  //
 
   return (
     <div className={cssRules.Map}>
