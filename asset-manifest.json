@@ -1,24 +1,24 @@
 {
   "files": {
-    "main.css": "/vi-eco-client/static/css/main.62aeba09.chunk.css",
-    "main.js": "/vi-eco-client/static/js/main.09b773a7.chunk.js",
-    "main.js.map": "/vi-eco-client/static/js/main.09b773a7.chunk.js.map",
-    "runtime-main.js": "/vi-eco-client/static/js/runtime-main.a8a27542.js",
-    "runtime-main.js.map": "/vi-eco-client/static/js/runtime-main.a8a27542.js.map",
-    "static/css/2.cefea94e.chunk.css": "/vi-eco-client/static/css/2.cefea94e.chunk.css",
-    "static/js/2.6bd51bae.chunk.js": "/vi-eco-client/static/js/2.6bd51bae.chunk.js",
-    "static/js/2.6bd51bae.chunk.js.map": "/vi-eco-client/static/js/2.6bd51bae.chunk.js.map",
-    "static/js/3.f487c21b.chunk.js": "/vi-eco-client/static/js/3.f487c21b.chunk.js",
-    "static/js/3.f487c21b.chunk.js.map": "/vi-eco-client/static/js/3.f487c21b.chunk.js.map",
-    "index.html": "/vi-eco-client/index.html",
-    "static/css/2.cefea94e.chunk.css.map": "/vi-eco-client/static/css/2.cefea94e.chunk.css.map",
-    "static/css/main.62aeba09.chunk.css.map": "/vi-eco-client/static/css/main.62aeba09.chunk.css.map",
-    "static/js/2.6bd51bae.chunk.js.LICENSE.txt": "/vi-eco-client/static/js/2.6bd51bae.chunk.js.LICENSE.txt"
+    "main.css": "/nklcb-capstone.github.io/vi-eco-client/static/css/main.62aeba09.chunk.css",
+    "main.js": "/nklcb-capstone.github.io/vi-eco-client/static/js/main.09b773a7.chunk.js",
+    "main.js.map": "/nklcb-capstone.github.io/vi-eco-client/static/js/main.09b773a7.chunk.js.map",
+    "runtime-main.js": "/nklcb-capstone.github.io/vi-eco-client/static/js/runtime-main.b7fcb422.js",
+    "runtime-main.js.map": "/nklcb-capstone.github.io/vi-eco-client/static/js/runtime-main.b7fcb422.js.map",
+    "static/css/2.cefea94e.chunk.css": "/nklcb-capstone.github.io/vi-eco-client/static/css/2.cefea94e.chunk.css",
+    "static/js/2.bd128d7b.chunk.js": "/nklcb-capstone.github.io/vi-eco-client/static/js/2.bd128d7b.chunk.js",
+    "static/js/2.bd128d7b.chunk.js.map": "/nklcb-capstone.github.io/vi-eco-client/static/js/2.bd128d7b.chunk.js.map",
+    "static/js/3.f487c21b.chunk.js": "/nklcb-capstone.github.io/vi-eco-client/static/js/3.f487c21b.chunk.js",
+    "static/js/3.f487c21b.chunk.js.map": "/nklcb-capstone.github.io/vi-eco-client/static/js/3.f487c21b.chunk.js.map",
+    "index.html": "/nklcb-capstone.github.io/vi-eco-client/index.html",
+    "static/css/2.cefea94e.chunk.css.map": "/nklcb-capstone.github.io/vi-eco-client/static/css/2.cefea94e.chunk.css.map",
+    "static/css/main.62aeba09.chunk.css.map": "/nklcb-capstone.github.io/vi-eco-client/static/css/main.62aeba09.chunk.css.map",
+    "static/js/2.bd128d7b.chunk.js.LICENSE.txt": "/nklcb-capstone.github.io/vi-eco-client/static/js/2.bd128d7b.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
-    "static/js/runtime-main.a8a27542.js",
+    "static/js/runtime-main.b7fcb422.js",
     "static/css/2.cefea94e.chunk.css",
-    "static/js/2.6bd51bae.chunk.js",
+    "static/js/2.bd128d7b.chunk.js",
     "static/css/main.62aeba09.chunk.css",
     "static/js/main.09b773a7.chunk.js"
   ]
