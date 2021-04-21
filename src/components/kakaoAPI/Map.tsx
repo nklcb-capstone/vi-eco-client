@@ -83,29 +83,30 @@ const Map: React.FC<Props> = ({ pageMode }) => {
           clickable: true,
         });
 
-        const infowindow = new kakao.maps.InfoWindow({
+        const overlay = new kakao.maps.CustomOverlay({
           //이부분에 윈도우 정보 html로 작성
           content: `<div class="wrap">
             <div class="title">${el.title}</div>  
             <div class="title">주소 : ${el.address}</div>  
             <div class="title">전화 : ${el.tell}</div>  
         </div>`,
+          position: hydro.getPosition(),
           //인포윈도우 클릭시 X창뜨게하기
-          removable: true,
+          // removable: true,
         });
 
         // Setinfowindows([...infowindows, infowindow]);
-        list.push(infowindow);
+        list.push(overlay);
 
         //클릭이벤트 등록
         kakao.maps.event.addListener(hydro, 'click', function () {
           //해당 마커외에 닫는 메소드
-          closeInfoWindow();
+          // closeInfoWindow();
           //마커 정보띄우기
-          infowindow.open(map, hydro);
+          // infowindow.open(map, hydro);
+          overlay.setMap(map);
         });
-
-        hydro.setMap(map);
+        // hydro.setMap(map);
       });
       return map;
     });
