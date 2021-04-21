@@ -176,24 +176,6 @@ const Map: React.FC<Props> = ({ pageMode }) => {
   return (
     <div className={cssRules.Map}>
       <div id="map" ref={mapContainerRef} style={{ width: '100vw', height: 'calc(100vh - 53px)' }} />
-      <div className={`${cssRules.menu_wrap} ${cssRules.bg_white}`} id="menuWrap">
-        <div className="option">
-          <div>
-            {/* <Form onFinish={searchPlaces} layout="inline"> */}
-            <Form layout="inline">
-              <Form.Item label="키워드" style={{ flex: 1 }}>
-                <Input defaultValue="이태원 맛집" id="keyword" />
-              </Form.Item>
-              <Form.Item>
-                <Button htmlType="submit">검색하기</Button>
-              </Form.Item>
-            </Form>
-          </div>
-        </div>
-        <hr />
-        <ul id="placesList" />
-        <div id="pagination" />
-      </div>
     </div>
   );
 };
