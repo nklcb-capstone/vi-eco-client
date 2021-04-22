@@ -1,8 +1,53 @@
-.warp {
+.wrap {
+  position: absolute;
+  left: 0;
+  bottom: 40px;
+  width: 392px;
+  height: 132px;
+  margin-left: -144px;
+  text-align: left;
+  overflow: hidden;
+  font-size: 12px;
+  font-family: 'Malgun Gothic', dotum, '돋움', sans-serif;
+  line-height: 1.5;
 }
-.title {
-  float: left;
-  width: 100%;
-  word-break: break-all;
-  word-wrap: break-word;
+.wrap * {
+  padding: 0;
+  margin: 0;
+}
+.wrap .info {
+  width: 390px;
+  height: 120px;
+  border-radius: 5px;
+  border-bottom: 2px solid #ccc;
+  border-right: 1px solid #ccc;
+  overflow: hidden;
+  background: #fff;
+}
+.wrap .info:nth-child(1) {
+  border: 0;
+  box-shadow: 0px 1px 2px #888;
+}
+.info .title {
+  padding: 5px 0 0 10px;
+  height: 40px;
+  background: #eee;
+  border-bottom: 1px solid #ddd;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.info .body {
+  position: relative;
+  overflow: hidden;
+}
+.info .desc {
+  position: relative;
+  margin: 13px 0 0 20px;
+  height: 75px;
+}
+.desc .ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
