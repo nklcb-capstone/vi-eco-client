@@ -95,6 +95,8 @@ const Map: React.FC<Props> = ({ pageMode }) => {
               <div class="desc">
                 <div>주소 : ${el.address}</div>  
                 <div>전화 : ${el.tell}</div> 
+                <div>요금 : ${el.price}</div>
+                <div>영업 시간 : ${el.time}</div>
               </div>
             </div>
           </div>`,
