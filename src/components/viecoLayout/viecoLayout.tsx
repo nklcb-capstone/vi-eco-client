@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 
 import React, { useState } from 'react';
@@ -57,3 +58,31 @@ function viecoLayout() {
 }
 
 export default viecoLayout;
+=======
+import React, { useEffect, useState } from 'react';
+import { Layout } from 'antd';
+import { CarOutlined } from '@ant-design/icons';
+import './viecoLayout.scss';
+
+const { Header, Content, Footer } = Layout;
+interface Props {
+  pageChange: () => void;
+  pageName: string;
+}
+const ViecoLayout: React.FC<Props> = ({ pageChange, pageName }) => {
+  return (
+    <div className="viecoLayout">
+      <div className="menubar">
+        <span>{pageName}</span>
+        <span>주변 정보</span>
+        <span>관련 정보</span>
+        <span id="modchange" onClick={pageChange}>
+          모드 전환
+        </span>
+      </div>
+    </div>
+  );
+};
+
+export default ViecoLayout;
+>>>>>>> origin/main

@@ -76,7 +76,7 @@
     display: block;
     color: #f2f2f2;
     text-align: center;
-    padding: 17px 13px;
+    padding: 17px 11px;
     text-decoration: none;
     font-size: 13px;
   }
@@ -97,13 +97,13 @@
     display: block;
     color: #f2f2f2;
     text-align: center;
-    padding: 17px 16px;
+    padding: 17px 14px;
     text-decoration: none;
     font-size: 14px;
   }
 }
 
-//Galaxy S20/S20+/S20 Ultra
+//Galaxy S20/S20+/S20 Ultra , fully compatible with upper viewports
 @media only screen and (min-device-width: 480px) and (max-device-width: 500px) {
   .menubar {
     overflow: hidden;

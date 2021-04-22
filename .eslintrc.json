@@ -39,7 +39,8 @@
     "@typescript-eslint/no-unused-expressions": "warn",
     "@typescript-eslint/no-inferrable-types": "off",
     "prettier/prettier": "off",
-    "prefer-const": "warn"
+    "prefer-const": "warn",
+    "react/prop-types" : "off"
   },
   "overrides": [
     {
