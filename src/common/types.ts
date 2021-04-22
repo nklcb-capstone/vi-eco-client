@@ -1,6 +1,8 @@
 export interface MapMarkerInfo {
   id: number;
   title: string;
+  time: string;
+  price: string;
   address: string;
   tell: string;
   lat: number;
