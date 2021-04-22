@@ -88,7 +88,10 @@ const Map: React.FC<Props> = ({ pageMode }) => {
           content: 
           `<div class="wrap">
             <div class="info">
-              <div class="title">${el.title}</div>  
+              <div class="top">
+                <div class="title">${el.title}
+                <div class="close" title="닫기"></div>
+              </div>  
               <div class="desc">
                 <div>주소 : ${el.address}</div>  
                 <div>전화 : ${el.tell}</div> 

@@ -11,10 +11,12 @@
   font-family: 'Malgun Gothic', dotum, '돋움', sans-serif;
   line-height: 1.5;
 }
+
 .wrap * {
   padding: 0;
   margin: 0;
 }
+
 .wrap .info {
   width: 390px;
   height: 120px;
@@ -24,19 +26,41 @@
   overflow: hidden;
   background: #fff;
 }
+
 .wrap .info:nth-child(1) {
   border: 0;
   box-shadow: 0px 1px 2px #888;
 }
-.info .title {
-  padding: 5px 0 0 10px;
+
+.top {
   height: 40px;
   background: #eee;
   border-bottom: 1px solid #ddd;
+  
+}
+
+.top .title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding: 5px 0 0 10px;
+  width: 363px;
+  height: 40px;
   font-size: 18px;
   font-weight: bold;
 }
 
+.top .close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  color: #888;
+  width: 17px;
+  height: 17px;
+  background: url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/overlay_close.png');
+}
+.info .close:hover {
+  cursor: pointer;
+}
 .info .body {
   position: relative;
   overflow: hidden;
