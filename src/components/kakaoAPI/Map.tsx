@@ -87,6 +87,8 @@ const Map: React.FC<Props> = ({ pageMode }) => {
           //이부분에 윈도우 정보 html로 작성
           content: `<div class="wrap">
             <div class="title">${el.title}</div>  
+            <div class="title">${el.titme}</div>
+            <div class="title">${el.price}</div>  
             <div class="title">주소 : ${el.address}</div>  
             <div class="title">전화 : ${el.tell}</div>  
         </div>`,
