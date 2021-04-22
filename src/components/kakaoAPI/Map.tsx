@@ -85,7 +85,6 @@ const Map: React.FC<Props> = ({ pageMode }) => {
 
         const overlay = new kakao.maps.CustomOverlay({
           //이부분에 윈도우 정보 html로 작성
-<<<<<<< HEAD
           content: 
           `<div class="wrap">
             <div class="info">
@@ -96,15 +95,6 @@ const Map: React.FC<Props> = ({ pageMode }) => {
               </div>
             </div>
           </div>`,
-=======
-          content: `<div class="wrap">
-            <div class="title">${el.title}</div>  
-            <div class="title">${el.titme}</div>
-            <div class="title">${el.price}</div>  
-            <div class="title">주소 : ${el.address}</div>  
-            <div class="title">전화 : ${el.tell}</div>  
-        </div>`,
->>>>>>> 15f26d9881f50087365991a675b368bae21fa44f
           position: hydro.getPosition(),
           //인포윈도우 클릭시 X창뜨게하기
           // removable: true,
