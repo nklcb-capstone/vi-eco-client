@@ -11,6 +11,9 @@
   background: #fff;
 }
 
+a {
+  color: white;
+}
 .menubar {
   overflow: hidden;
   background-color: #333;
@@ -61,7 +64,7 @@
   }
 }
 
-//iPhone 6/7/8 & iPhone X/XS & iPhone 12 & iPhone 11 Pro 
+//iPhone 6/7/8 & iPhone X/XS & iPhone 12 & iPhone 11 Pro
 @media only screen and (min-device-width: 375px) and (max-device-width: 413px) {
   .menubar {
     overflow: hidden;
