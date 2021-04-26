@@ -1,9 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Layout } from 'antd';
-import { CarOutlined } from '@ant-design/icons';
 import './viecoLayout.scss';
 
-const { Header, Content, Footer } = Layout;
 interface Props {
   pageChange: () => void;
   pageName: string;
