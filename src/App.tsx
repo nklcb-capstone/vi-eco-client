@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import logo from './logo.png';
 import './App.scss';
-import Test from 'components/Test';
 import Map from 'components/kakaoAPI/Map';
 import Layout from 'components/viecoLayout/viecoLayout';
+import { HashRouter, Route } from 'react-router-dom';
+import CarInfor from 'components/Infor/CarInfor';
+import { homedir } from 'node:os';
 
 function App(): React.ReactElement {
   const [pageMode, setPageMode] = useState(true);
@@ -17,12 +18,21 @@ function App(): React.ReactElement {
     <div className="App">
       {/* //레이아웃 적용 버전 */}
       <header></header>
-      <body>
+      {/* <body>
         <Map pageMode={pageMode}></Map>
-      </body>
-      <footer>
+      </body> */}
+      {/* <footer>
         <Layout pageName={pageName} pageChange={pageChange}></Layout>
-      </footer>
+      </footer> */}
+      {/* <Route path="/" exact={true} component={Map}></Route> */}
+
+      <HashRouter>
+        <footer>
+          <Layout pageName={pageName} pageChange={pageChange}></Layout>
+        </footer>
+        <Route path="/" exact={true} render={() => <Map pageMode={pageMode}></Map>}></Route>
+        <Route path="/info" exact={true} component={CarInfor}></Route>
+      </HashRouter>
     </div>
   );
 }
