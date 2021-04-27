@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import MediaQuery from 'react-responsive';
+import axios from 'axios';
 import { Layout, Menu } from 'antd';
 import { Row, Col, Divider } from 'antd';
 import { Card } from 'antd';
@@ -13,6 +14,16 @@ function CarInfo() {
   // 행열 가이드      3 3 3
   // row : 2 (행)  2 ㅁㅁㅁ
   // col : 3 (열)  2 ㅁㅁㅁ
+
+  const getDate = async () => {
+    const { data } = await axios.get('https://vi-eco.jseung.me/api/car/information/search');
+    console.log(data);
+  };
+
+  useEffect(() => {
+    getDate();
+  }, []);
+
   for (let row = 0; row < 2; row++) {
     for (let col = 0; col < 3; col++) {
       cols.push(
@@ -47,9 +58,7 @@ function CarInfo() {
       <Content style={{ padding: '0 50px' }}>
         <Divider orientation="left">전기차</Divider>
         <MediaQuery maxWidth={1920}>
-          <Row gutter={[16, 24]}>
-            {cols}
-          </Row>
+          <Row gutter={[16, 24]}>{cols}</Row>
         </MediaQuery>
       </Content>
       <Footer>
