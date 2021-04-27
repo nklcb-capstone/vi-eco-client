@@ -31,6 +31,12 @@ const mapOptions = {
 //
 //
 //
+const ID_CUSTOM_OVERLAY_CLOSE = 'customOverlayClose';
+
+interface MarkerWithOriginal<T> {
+  marker: any;
+  original: T;
+}
 
 interface Props {
   pageMode: boolean;
@@ -68,69 +74,35 @@ const Map: React.FC<Props> = ({ pageMode }) => {
   const mapContainerRef = React.createRef<HTMLDivElement>();
 
   //
-  // Markers and Infowindows
+  // Markers and Overlays
   //
 
-  // setEvMarkers 함수가 따로 있어서 set 함수 이름뒤에 State를 붙임
-  const [evMarkers, setEvMarkers] = React.useState<any[]>([]);
-  const [hydrogenMarkers, setHydrogenMarkers] = React.useState<any[]>([]);
-  const [evInfowindows, setEvInfowindows] = React.useState<any[]>([]);
-  const [hydrogenInfowindows, setHydrogenInfowindows] = React.useState<any[]>([]);
+  const [evMarkers, setEvMarkers] = React.useState<MarkerWithOriginal<EV>[]>([]);
+  const [hydrogenMarkers, setHydrogenMarkers] = React.useState<MarkerWithOriginal<MapMarkerInfo>[]>([]);
+  const [evOverlay, setEvOverlay] = React.useState<any>(null);
+  const [hydrogenOverlay, setHydrogenOverlay] = React.useState<any>(null);
 
-  // 마커 클릭했을 때 다른 인포윈도우를 모두 닫는 작업
-  const closeAllInfoWindows = useCallback(() => {
-    // 모든 인포윈도 닫기
-    // 전기
-    evInfowindows.forEach((el: any) => {
-      el.setMap(null);
-      // el.close();
-    });
-    // 수소
-    hydrogenInfowindows.forEach((el: any) => {
-      // el.close();
-      el.setMap(null);
-    });
-  }, [evInfowindows, hydrogenInfowindows]);
+  // const closeAllOverlays = useCallback(() => {
+  //   // TODO: A/B testing..
+  //   // if (evOverlay) evOverlay.setMap(null);
+  //   // if (hydrogenOverlay) hydrogenOverlay.setMap(null);
+  //   evOverlay?.setMap(null);
+  //   hydrogenOverlay?.setMap(null);
+  // }, [evOverlay, hydrogenOverlay]);
 
   useEffect(() => {
-    evMarkers.forEach((marker) => {
-      evInfowindows.forEach((infowindow) => {
-        kakao.maps.event.addListener(marker, 'click', function () {
-          // 모든 마커 닫는 메소드
-          closeAllInfoWindows();
-          // 해당 마커 정보띄우기
-          infowindow.setMap(map);
-        });
-      });
-      hydrogenInfowindows.forEach((infowindow) => {
-        kakao.maps.event.addListener(marker, 'click', function () {
-          // 모든 마커 닫는 메소드
-          closeAllInfoWindows();
-          // 해당 마커 정보띄우기
-          infowindow.setMap(map);
-        });
+    evMarkers.forEach(({ marker, original }) => {
+      kakao.maps.event.addListener(marker, 'click', () => {
+        setEvOverlayMap(original, marker);
       });
     });
-    hydrogenMarkers.forEach((marker) => {
-      evInfowindows.forEach((infowindow) => {
-        kakao.maps.event.addListener(marker, 'click', function () {
-          // 모든 마커 닫는 메소드
-          closeAllInfoWindows();
-          // 해당 마커 정보띄우기
-          infowindow.setMap(map);
-        });
-      });
-      hydrogenInfowindows.forEach((infowindow) => {
-        kakao.maps.event.addListener(marker, 'click', function () {
-          // 모든 마커 닫는 메소드
-          closeAllInfoWindows();
-          // 해당 마커 정보띄우기
-          infowindow.setMap(map);
-        });
+    hydrogenMarkers.forEach(({ marker, original }) => {
+      kakao.maps.event.addListener(marker, 'click', () => {
+        setHydrogenOverlayMap(original, marker);
       });
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [evMarkers, hydrogenMarkers, closeAllInfoWindows, map]);
+  }, [evMarkers, hydrogenMarkers, map]);
 
   //
   // Hydrogen list
@@ -138,7 +110,7 @@ const Map: React.FC<Props> = ({ pageMode }) => {
 
   const setHydrogenMarkersMap = () => {
     //markerDate에 있는 마커 여러개 생성 및 표시
-    const markersAndInfowindows = markerdata.map((el: MapMarkerInfo): { marker: any; infowindow: any } => {
+    const markersAndOriginals = markerdata.map((el: MapMarkerInfo): { marker: any; original: MapMarkerInfo } => {
       const marker = new kakao.maps.Marker({
         map: map,
         position: new kakao.maps.LatLng(el.lat, el.lng),
@@ -146,43 +118,16 @@ const Map: React.FC<Props> = ({ pageMode }) => {
         clickable: true,
       });
 
-      const infowindow = new kakao.maps.CustomOverlay({
-        //이부분에 윈도우 정보 html로 작성
-        content: `<div class="wrap">
-        <div class="info">
-          <div class="top">
-            <div class="title">${el.title}
-            <div class="close" title="닫기"></div>
-          </div>  
-          <div class="desc">
-            <div>주소 : ${el.address}</div>  
-            <div>전화 : ${el.tell}</div> 
-            <div>요금 : ${el.price}</div>
-            <div>영업 시간 : ${el.time}</div>
-          </div>
-        </div>
-      </div>`,
-        position: marker.getPosition(),
-        map: map,
-      });
-
-      return { marker, infowindow };
-    });
-
-    markersAndInfowindows.forEach(({ marker, infowindow }) => {
       marker.setMap(map);
-      kakao.maps.event.addListener(marker, 'click', function () {
-        //마커 정보띄우기
-        infowindow.setMap(map);
-      });
+
+      return { marker, original: el };
     });
 
-    setHydrogenMarkers(markersAndInfowindows.map(({ marker }) => marker));
-    setHydrogenInfowindows(markersAndInfowindows.map(({ infowindow }) => infowindow));
+    setHydrogenMarkers(markersAndOriginals.map(({ marker, original }) => ({ marker, original })));
   };
 
   const unsetHydrogenMarkersMap = () => {
-    hydrogenMarkers.forEach((marker: any): void => {
+    hydrogenMarkers.forEach(({ marker }): void => {
       marker.setMap(null);
     });
   };
@@ -202,7 +147,8 @@ const Map: React.FC<Props> = ({ pageMode }) => {
   useEffect(() => {
     if (map) {
       // 맵이 로딩된 이후에 동작
-      closeAllInfoWindows();
+      closeEvOverlay();
+      closeHydrogenOverlay();
       if (pageMode) {
         // EV
         loadEvs();
@@ -217,57 +163,9 @@ const Map: React.FC<Props> = ({ pageMode }) => {
   }, [map, pageMode]);
 
   const setEvMarkersMap = () => {
-    const markersAndEvInfowindows = evs.map((ev: EV): { marker: any; infowindow: any } => {
+    const markersAndOriginals = evs.map((ev: EV): { marker: any; original: EV } => {
       const imageSize = new kakao.maps.Size(24, 35);
       const markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
-
-      //     //
-      //     //
-      //     //
-
-      //     const hydro = new kakao.maps.Marker({
-      //       map: map,
-      //       position: new kakao.maps.LatLng(el.lat, el.lng),
-      //       title: el.title,
-      //       clickable: true,
-      //     });
-
-      //     const overlay = new kakao.maps.CustomOverlay({
-      //       //이부분에 윈도우 정보 html로 작성
-      //       content: `<div class="wrap">
-      //   <div class="info">
-      //     <div class="top">
-      //       <div class="title">${el.title}
-      //       <div class="close" title="닫기"></div>
-      //     </div>
-      //     <div class="desc">
-      //       <div>주소 : ${el.address}</div>
-      //       <div>전화 : ${el.tell}</div>
-      //       <div>요금 : ${el.price}</div>
-      //       <div>영업 시간 : ${el.time}</div>
-      //     </div>
-      //   </div>
-      // </div>`,
-      //       position: hydro.getPosition(),
-      //       //인포윈도우 클릭시 X창뜨게하기
-      //       // removable: true,
-      //     });
-
-      //     // Setinfowindows([...infowindows, infowindow]);
-      //     list.push(overlay);
-
-      //     //클릭이벤트 등록
-      //     kakao.maps.event.addListener(hydro, 'click', function () {
-      //       //해당 마커외에 닫는 메소드
-      //       // closeInfoWindow();
-      //       //마커 정보띄우기
-      //       // infowindow.open(map, hydro);
-      //       overlay.setMap(map);
-      //     });
-
-      //     //
-      //     //
-      //     //
 
       const marker = new kakao.maps.Marker({
         map: map,
@@ -277,50 +175,16 @@ const Map: React.FC<Props> = ({ pageMode }) => {
         image: markerImage,
       });
 
-      const infowindow = new kakao.maps.CustomOverlay({
-        //이부분에 윈도우 정보 html로 작성
-        content: `<div class="wrap">
-    <div class="info">
-      <div class="top">
-        <div class="title">${ev.statNm}
-        <div class="close" title="닫기"></div>
-      </div>  
-      <div class="desc">
-        <div>주소 : ${ev.addr}</div>  
-        <div>전화 : ${ev.busiCall}</div> 
-        <div>요금 : ${ev}</div>
-        <div>영업 시간 : ${ev}</div>
-      </div>
-    </div>
-  </div>`,
-        position: marker.getPosition(),
-        map: map,
-      });
-      // const infowindow = new kakao.maps.InfoWindow({
-      //   content: `<div style="display: flex; flex-flow: column; min-width: 350px;">
-      //   <div>전기차충전소</div>
-      // <div class="title">${ev.statNm}</div>
-      // <div class="title">${ev.addr}</div>
-      // <div class="title">${ev.useTime}</div>
-      // </div>`,
-      //   removable: true,
-      // });
-
       marker.setMap(map);
-      kakao.maps.event.addListener(marker, 'click', function () {
-        // infowindow.open(map, marker);
-        infowindow.setMap(map);
-      });
 
-      return { marker, infowindow };
+      return { marker, original: ev };
     });
 
-    setEvMarkers(markersAndEvInfowindows.map(({ marker }) => marker));
-    setEvInfowindows(markersAndEvInfowindows.map(({ infowindow }) => infowindow));
+    setEvMarkers(markersAndOriginals.map(({ marker, original }) => ({ marker, original })));
   };
 
   const unsetEvMarkersMap = () => {
-    evMarkers.forEach((marker: any): void => {
+    evMarkers.forEach(({ marker }): void => {
       marker.setMap(null);
     });
   };
@@ -332,6 +196,86 @@ const Map: React.FC<Props> = ({ pageMode }) => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [evs, map]);
+
+  //
+  // Overlay
+  //
+
+  const closeEvOverlay = () => {
+    evOverlay?.setMap(null);
+  };
+
+  const closeHydrogenOverlay = () => {
+    hydrogenOverlay?.setMap(null);
+  };
+
+  const setEvOverlayMap = (ev: EV, marker: any) => {
+    setEvOverlay((): any => {
+      const overlay = new kakao.maps.CustomOverlay({
+        //이부분에 윈도우 정보 html로 작성
+        content: `<div class="wrap">
+          <div class="info">
+            <div class="top">
+              <div class="title">${ev.statNm}
+              <div class="close" title="닫기" id=${ID_CUSTOM_OVERLAY_CLOSE}></div>
+            </div>  
+            <div class="desc">
+              <div>주소 : ${ev.addr}</div>  
+              <div>전화 : ${ev.busiCall}</div> 
+              <div>요금 : ${ev}</div>
+              <div>영업 시간 : ${ev}</div>
+            </div>
+          </div>
+        </div>`,
+        position: marker.getPosition(),
+        map: map,
+      });
+
+      return overlay;
+    });
+  };
+
+  const setHydrogenOverlayMap = (el: MapMarkerInfo, marker: any) => {
+    setHydrogenOverlay((): any => {
+      const overlay = new kakao.maps.CustomOverlay({
+        //이부분에 윈도우 정보 html로 작성
+        content: `<div class="wrap">
+        <div class="info">
+          <div class="top">
+            <div class="title">${el.title}
+            <div class="close" id=${ID_CUSTOM_OVERLAY_CLOSE} title="닫기"></div>
+          </div>  
+          <div class="desc">
+            <div>주소 : ${el.address}</div>  
+            <div>전화 : ${el.tell}</div> 
+            <div>요금 : ${el.price}</div>
+            <div>영업 시간 : ${el.time}</div>
+          </div>
+        </div>
+      </div>`,
+        position: marker.getPosition(),
+        map: map,
+      });
+
+      return overlay;
+    });
+  };
+
+  useEffect(() => {
+    const overlayClose = document.getElementById(ID_CUSTOM_OVERLAY_CLOSE);
+    if (overlayClose) {
+      overlayClose.addEventListener('click', closeEvOverlay);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [evOverlay]);
+
+  useEffect(() => {
+    const overlayClose = document.getElementById(ID_CUSTOM_OVERLAY_CLOSE);
+    if (overlayClose) {
+      overlayClose.addEventListener('click', closeHydrogenOverlay);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [hydrogenOverlay]);
 
   //
   // Render
