@@ -5,7 +5,6 @@ import { Link } from 'react-router-dom';
 import { HashRouter, Route } from 'react-router-dom';
 import CarInfor from 'components/Infor/CarInfor';
 
-const { Header, Content, Footer } = Layout;
 interface Props {
   pageChange: () => void;
   pageName: string;
