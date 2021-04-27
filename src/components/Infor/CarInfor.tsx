@@ -9,6 +9,26 @@ const { Header, Content, Footer } = Layout;
 const { Meta } = Card;
 
 function CarInfo() {
+  const cols = [];
+  for (let i = 0; i < 3; i++) {
+    cols.push(
+      <Col key={i.toString()} span={24 / 3}>
+        <Card
+          hoverable
+          style={{ width: 400, height: 380 }}
+          cover={
+            <img
+              alt="example"
+              src="https://imgauto-phinf.pstatic.net/20210223_189/auto_1614065502912dSObk_PNG/20210223163129_ipfD3sWg.png?type=f567_410"
+            />
+          }
+        >
+          <Meta title="2021 아이오닉 5" description="출시가 4,980~5,755 만원" />
+        </Card>
+      </Col>,
+    );
+  }
+
   return (
     <Layout className="layout">
       <Header>
@@ -23,90 +43,8 @@ function CarInfo() {
         <Divider orientation="left">전기차</Divider>
         <MediaQuery maxWidth={1920}>
           <Row gutter={[16, 24]}>
-            <Col className="gutter-row" span={8}>
-              <Card
-                hoverable
-                style={{ width: 400, height: 380 }}
-                cover={
-                  <img
-                    alt="example"
-                    src="https://imgauto-phinf.pstatic.net/20210223_189/auto_1614065502912dSObk_PNG/20210223163129_ipfD3sWg.png?type=f567_410"
-                  />
-                }
-              >
-                <Meta title="2021 아이오닉 5" description="출시가 4,980~5,755 만원" />
-              </Card>
-            </Col>
-            <Col className="gutter-row" span={8}>
-              <Card
-                hoverable
-                style={{ width: 400, height: 380 }}
-                cover={
-                  <img
-                    alt="example"
-                    src="https://imgauto-phinf.pstatic.net/20210223_189/auto_1614065502912dSObk_PNG/20210223163129_ipfD3sWg.png?type=f567_410"
-                  />
-                }
-              >
-                <Meta title="2021 아이오닉 5" description="출시가 4,980~5,755 만원" />
-              </Card>
-            </Col>
-            <Col className="gutter-row" span={8}>
-              <Card
-                hoverable
-                style={{ width: 400, height: 380 }}
-                cover={
-                  <img
-                    alt="example"
-                    src="https://imgauto-phinf.pstatic.net/20210223_189/auto_1614065502912dSObk_PNG/20210223163129_ipfD3sWg.png?type=f567_410"
-                  />
-                }
-              >
-                <Meta title="2021 아이오닉 5" description="출시가 4,980~5,755 만원" />
-              </Card>
-            </Col>
-            <Col className="gutter-row" span={8}>
-              <Card
-                hoverable
-                style={{ width: 400, height: 380 }}
-                cover={
-                  <img
-                    alt="example"
-                    src="https://imgauto-phinf.pstatic.net/20210223_189/auto_1614065502912dSObk_PNG/20210223163129_ipfD3sWg.png?type=f567_410"
-                  />
-                }
-              >
-                <Meta title="2021 아이오닉 5" description="출시가 4,980~5,755 만원" />
-              </Card>
-            </Col>
-            <Col className="gutter-row" span={8}>
-              <Card
-                hoverable
-                style={{ width: 400, height: 380 }}
-                cover={
-                  <img
-                    alt="example"
-                    src="https://imgauto-phinf.pstatic.net/20210223_189/auto_1614065502912dSObk_PNG/20210223163129_ipfD3sWg.png?type=f567_410"
-                  />
-                }
-              >
-                <Meta title="2021 아이오닉 5" description="출시가 4,980~5,755 만원" />
-              </Card>
-            </Col>
-            <Col className="gutter-row" span={8}>
-              <Card
-                hoverable
-                style={{ width: 400, height: 380 }}
-                cover={
-                  <img
-                    alt="example"
-                    src="https://imgauto-phinf.pstatic.net/20210223_189/auto_1614065502912dSObk_PNG/20210223163129_ipfD3sWg.png?type=f567_410"
-                  />
-                }
-              >
-                <Meta title="2021 아이오닉 5" description="출시가 4,980~5,755 만원" />
-              </Card>
-            </Col>
+            {cols}
+            {cols}
           </Row>
         </MediaQuery>
       </Content>
