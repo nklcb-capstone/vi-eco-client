@@ -10,6 +10,7 @@ const { Meta } = Card;
 
 function CarInfo() {
   const cols = [];
+  //i = 화면에 표시되는 카드 수
   for (let i = 0; i < 3; i++) {
     cols.push(
       <Col key={i.toString()} span={24 / 3}>
