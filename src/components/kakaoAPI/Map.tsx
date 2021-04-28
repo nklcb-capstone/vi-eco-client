@@ -266,6 +266,10 @@ const Map: React.FC<Props> = ({ pageMode }) => {
     const title = document.createElement('div');
     title.className = 'title';
     title.innerText = ev.statNm;
+    const link = document.createElement('a');
+    link.setAttribute('href', `https://map.kakao.com/link/to/${ev.statNm},${ev.lat},${ev.lng}`);
+    link.setAttribute('target', '_blank');
+    link.appendChild(title);
     const close = document.createElement('div');
     close.className = 'close';
     close.title = '닫기';
@@ -297,7 +301,7 @@ const Map: React.FC<Props> = ({ pageMode }) => {
 
     wrap.append(info);
     info.append(top, desc);
-    top.append(title, close);
+    top.append(link, close);
     desc.append(addr, busiCall, chgerType, stat, powerType, useTime);
     if (note) desc.append(note);
 
