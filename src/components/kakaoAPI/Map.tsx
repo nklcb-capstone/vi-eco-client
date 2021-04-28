@@ -22,12 +22,6 @@ declare global {
 }
 const { kakao } = window;
 
-const mapOptions = {
-  //지도 기본 위치값 서울역 좌표로 지정
-  center: new window.kakao.maps.LatLng(37.555178, 126.970756),
-  level: 5,
-};
-
 //
 //
 //
@@ -42,7 +36,41 @@ interface Props {
   pageMode: boolean;
 }
 
+// let lat: number = 37.555178;
+// let lon: number = 126.970756;
+
+// function getLocation() {
+//   if (navigator.geolocation) {
+//     // GPS를 지원하면
+//     navigator.geolocation.getCurrentPosition(
+//       function (position) {
+//         lat = position.coords.latitude;
+//         lon = position.coords.longitude;
+//       },
+//       function (error) {
+//         console.error(error);
+//       },
+//       {
+//         enableHighAccuracy: true,
+//         //maximumAge: 0,
+//         //timeout: Infinity,
+//       },
+//     );
+//   } else {
+//     alert('GPS를 지원하지 않습니다');
+//   }
+// }
+
+const mapOptions = {
+  //지도 기본 위치값 서울역 좌표로 지정
+  center: new window.kakao.maps.LatLng(37.555178, 126.970756),
+  level: 5,
+};
+
 const Map: React.FC<Props> = ({ pageMode }) => {
+  //
+  //지도 그리기
+  //
   useEffect(() => {
     // 화면표시전에 로딩되면 마커가 제대로 생성되지않아 랜더링이 제대로 이루어지않기 때문에
     // 이를 방지하기 위해 setTimeout
@@ -55,7 +83,6 @@ const Map: React.FC<Props> = ({ pageMode }) => {
   //
   // Map
   //
-
   const [map, setMap] = useState<any>();
   const [ps, setPs] = useState<any>();
 
@@ -66,12 +93,39 @@ const Map: React.FC<Props> = ({ pageMode }) => {
       setPs(() => {
         return new kakao.maps.services.Places();
       });
-
       return map;
     });
   };
 
   const mapContainerRef = React.createRef<HTMLDivElement>();
+
+  //
+  // 위치 받아오기
+  //
+  function getLocation() {
+    if (navigator.geolocation) {
+      // GPS를 지원하면
+      navigator.geolocation.getCurrentPosition(
+        function (position) {
+          map.setCenter(new window.kakao.maps.LatLng(position.coords.latitude, position.coords.longitude));
+        },
+        function (error) {
+          console.error(error);
+        },
+        {
+          enableHighAccuracy: true,
+        },
+      );
+    } else {
+      alert('GPS를 지원하지 않습니다');
+    }
+  }
+
+  useEffect(() => {
+    if (map) {
+      getLocation();
+    }
+  }, [map]);
 
   //
   // Markers and Overlays
@@ -211,22 +265,24 @@ const Map: React.FC<Props> = ({ pageMode }) => {
 
   const setEvOverlayMap = (ev: EV, marker: any) => {
     setEvOverlay((): any => {
+      console.log(ev);
       const overlay = new kakao.maps.CustomOverlay({
         //이부분에 윈도우 정보 html로 작성
         content: `<div class="wrap">
-          <div class="info">
-            <div class="top">
-              <div class="title">${ev.statNm}
-              <div class="close" title="닫기" id=${ID_CUSTOM_OVERLAY_CLOSE}></div>
-            </div>  
-            <div class="desc">
-              <div>주소 : ${ev.addr}</div>  
-              <div>전화 : ${ev.busiCall}</div> 
-              <div>요금 : ${ev}</div>
-              <div>영업 시간 : ${ev}</div>
-            </div>
+        <div class="info">
+          <div class="top">
+            <div class="title">
+            <a href="https://map.kakao.com/link/to/${ev.statNm},${ev.lat},${ev.lng}">${ev.statNm}</a>
+            <div class="close" title="닫기" id=${ID_CUSTOM_OVERLAY_CLOSE}></div>
+          </div>  
+          <div class="desc">
+            <div>주소 : ${ev.addr}</div>  
+            <div>전화 : ${ev.busiCall}</div> 
+            <div>요금 : ${ev.powerType}</div>
+            <div>영업 시간 : ${ev.useTime}</div>
           </div>
-        </div>`,
+        </div>
+      </div>`,
         position: marker.getPosition(),
         map: map,
       });
@@ -242,7 +298,8 @@ const Map: React.FC<Props> = ({ pageMode }) => {
         content: `<div class="wrap">
         <div class="info">
           <div class="top">
-            <div class="title">${el.title}
+            <div class="title">
+              <a href="https://map.kakao.com/link/to/${el.address},${el.lat},${el.lng}">${el.title}</a>
             <div class="close" id=${ID_CUSTOM_OVERLAY_CLOSE} title="닫기"></div>
           </div>  
           <div class="desc">
