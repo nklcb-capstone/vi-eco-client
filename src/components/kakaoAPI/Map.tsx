@@ -112,14 +112,6 @@ const Map: React.FC<Props> = ({ pageMode }) => {
   const [evOverlay, setEvOverlay] = React.useState<any>(null);
   const [hydrogenOverlay, setHydrogenOverlay] = React.useState<any>(null);
 
-  // const closeAllOverlays = useCallback(() => {
-  //   // TODO: A/B testing..
-  //   // if (evOverlay) evOverlay.setMap(null);
-  //   // if (hydrogenOverlay) hydrogenOverlay.setMap(null);
-  //   evOverlay?.setMap(null);
-  //   hydrogenOverlay?.setMap(null);
-  // }, [evOverlay, hydrogenOverlay]);
-
   useEffect(() => {
     evMarkers.forEach(({ marker, original }) => {
       kakao.maps.event.addListener(marker, 'click', () => {
@@ -241,6 +233,8 @@ const Map: React.FC<Props> = ({ pageMode }) => {
 
   const setEvOverlayMap = (ev: EV, marker: any) => {
     setEvOverlay((): any => {
+      if (evOverlay) evOverlay.setMap(null);
+
       const wrap = document.createElement('div');
       wrap.className = 'wrap';
       const info = document.createElement('div');
@@ -323,22 +317,6 @@ const Map: React.FC<Props> = ({ pageMode }) => {
       return overlay;
     });
   };
-
-  useEffect(() => {
-    const overlayClose = document.getElementById(ID_CUSTOM_OVERLAY_CLOSE);
-    if (overlayClose) {
-      overlayClose.addEventListener('click', closeEvOverlay);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [evOverlay]);
-
-  useEffect(() => {
-    const overlayClose = document.getElementById(ID_CUSTOM_OVERLAY_CLOSE);
-    if (overlayClose) {
-      overlayClose.addEventListener('click', closeHydrogenOverlay);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [hydrogenOverlay]);
 
   //
   // Render
