@@ -28,9 +28,10 @@ const { kakao } = window;
 //
 const ID_CUSTOM_OVERLAY_CLOSE = 'customOverlayClose';
 
-interface MarkerWithOriginal<T> {
+interface MarkerOriginalEvent<T> {
   marker: any;
   original: T;
+  event: () => void;
 }
 
 interface Props {
@@ -107,24 +108,24 @@ const Map: React.FC<Props> = ({ pageMode }) => {
   // Markers and Overlays
   //
 
-  const [evMarkers, setEvMarkers] = React.useState<MarkerWithOriginal<EV>[]>([]);
-  const [hydrogenMarkers, setHydrogenMarkers] = React.useState<MarkerWithOriginal<MapMarkerInfo>[]>([]);
+  const [evMarkers, setEvMarkers] = React.useState<MarkerOriginalEvent<EV>[]>([]);
+  const [hydrogenMarkers, setHydrogenMarkers] = React.useState<MarkerOriginalEvent<MapMarkerInfo>[]>([]);
   const [evOverlay, setEvOverlay] = React.useState<any>(null);
   const [hydrogenOverlay, setHydrogenOverlay] = React.useState<any>(null);
 
-  useEffect(() => {
-    evMarkers.forEach(({ marker, original }) => {
-      kakao.maps.event.addListener(marker, 'click', () => {
-        setEvOverlayMap(original, marker);
-      });
-    });
-    hydrogenMarkers.forEach(({ marker, original }) => {
-      kakao.maps.event.addListener(marker, 'click', () => {
-        setHydrogenOverlayMap(original, marker);
-      });
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [evMarkers, hydrogenMarkers, map]);
+  // useEffect(() => {
+  //   evMarkers.forEach(({ marker, original }) => {
+  //     kakao.maps.event.addListener(marker, 'click', () => {
+  //       setEvOverlayMap(original, marker);
+  //     });
+  //   });
+  //   hydrogenMarkers.forEach(({ marker, original }) => {
+  //     kakao.maps.event.addListener(marker, 'click', () => {
+  //       setHydrogenOverlayMap(original, marker);
+  //     });
+  //   });
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [evMarkers, hydrogenMarkers, map]);
 
   //
   // Hydrogen list
@@ -132,7 +133,11 @@ const Map: React.FC<Props> = ({ pageMode }) => {
 
   const setHydrogenMarkersMap = () => {
     //markerDate에 있는 마커 여러개 생성 및 표시
-    const markersAndOriginals = markerdata.map((el: MapMarkerInfo): { marker: any; original: MapMarkerInfo } => {
+    const markersAndOriginals = markerdata.map((el: MapMarkerInfo): {
+      marker: any;
+      original: MapMarkerInfo;
+      event: () => void;
+    } => {
       const marker = new kakao.maps.Marker({
         map: map,
         position: new kakao.maps.LatLng(el.lat, el.lng),
@@ -142,10 +147,16 @@ const Map: React.FC<Props> = ({ pageMode }) => {
 
       marker.setMap(map);
 
-      return { marker, original: el };
+      const event = () => {
+        setHydrogenOverlayMap(el, marker);
+      };
+
+      kakao.maps.event.addListener(marker, 'click', event);
+
+      return { marker, original: el, event };
     });
 
-    setHydrogenMarkers(markersAndOriginals.map(({ marker, original }) => ({ marker, original })));
+    setHydrogenMarkers(markersAndOriginals);
   };
 
   const unsetHydrogenMarkersMap = () => {
@@ -185,7 +196,7 @@ const Map: React.FC<Props> = ({ pageMode }) => {
   }, [map, pageMode]);
 
   const setEvMarkersMap = () => {
-    const markersAndOriginals = evs.map((ev: EV): { marker: any; original: EV } => {
+    const markersOriginalsEvents = evs.map((ev: EV): { marker: any; original: EV; event: () => void } => {
       const imageSize = new kakao.maps.Size(24, 35);
       const markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
 
@@ -199,10 +210,22 @@ const Map: React.FC<Props> = ({ pageMode }) => {
 
       marker.setMap(map);
 
-      return { marker, original: ev };
+      const event = () => {
+        setEvOverlayMap(ev, marker);
+      };
+
+      kakao.maps.event.addListener(marker, 'click', event);
+
+      return { marker, original: ev, event };
     });
 
-    setEvMarkers(markersAndOriginals.map(({ marker, original }) => ({ marker, original })));
+    setEvMarkers((prev) => {
+      prev.forEach(({ marker, event }) => {
+        kakao.maps.event.removeListener(marker, 'click', event);
+      });
+
+      return markersOriginalsEvents;
+    });
   };
 
   const unsetEvMarkersMap = () => {
@@ -232,63 +255,116 @@ const Map: React.FC<Props> = ({ pageMode }) => {
   };
 
   const setEvOverlayMap = (ev: EV, marker: any) => {
-    setEvOverlay((): any => {
-      if (evOverlay) evOverlay.setMap(null);
+    if (evOverlay) evOverlay.setMap(null);
 
-      const wrap = document.createElement('div');
-      wrap.className = 'wrap';
-      const info = document.createElement('div');
-      info.className = 'info';
-      const top = document.createElement('div');
-      top.className = 'top';
-      const title = document.createElement('div');
-      title.className = 'title';
-      title.innerText = ev.statNm;
-      const close = document.createElement('div');
-      close.className = 'close';
-      close.title = '닫기';
-      const desc = document.createElement('div');
-      desc.className = 'desc';
-      const addr = document.createElement('div');
-      addr.className = 'desc-inner';
-      addr.innerText = `주소 : ${ev.addr}`;
-      const busiCall = document.createElement('div');
-      busiCall.className = 'desc-inner';
-      busiCall.innerText = `전화 : ${ev.busiCall}`;
-      const chgerType = document.createElement('div');
-      chgerType.className = 'desc-inner';
-      chgerType.innerText = `충전기타입 : ${evChgerTypeConvert(ev.chgerType)}`;
-      const stat = document.createElement('div');
-      stat.className = 'desc-inner';
-      stat.innerText = `충전기상태 : ${evStatConvert(ev.stat)}`;
-      const powerType = document.createElement('div');
-      powerType.className = 'desc-inner';
-      powerType.innerText = `충전량 : ${ev.powerType}`;
-      const useTime = document.createElement('div');
-      useTime.className = 'desc-inner';
-      useTime.innerText = `이용가능시간 : ${ev.useTime}`;
-      const note = ev.note ? document.createElement('div') : null;
-      if (note) {
-        note.className = 'desc-inner';
-        note.innerText = `충전소 안내 : ${ev.note}`;
-      }
+    const wrap = document.createElement('div');
+    wrap.className = 'wrap';
+    const info = document.createElement('div');
+    info.className = 'info';
+    const top = document.createElement('div');
+    top.className = 'top';
+    const title = document.createElement('div');
+    title.className = 'title';
+    title.innerText = ev.statNm;
+    const close = document.createElement('div');
+    close.className = 'close';
+    close.title = '닫기';
+    const desc = document.createElement('div');
+    desc.className = 'desc';
+    const addr = document.createElement('div');
+    addr.className = 'desc-inner';
+    addr.innerText = `주소 : ${ev.addr}`;
+    const busiCall = document.createElement('div');
+    busiCall.className = 'desc-inner';
+    busiCall.innerText = `전화 : ${ev.busiCall}`;
+    const chgerType = document.createElement('div');
+    chgerType.className = 'desc-inner';
+    chgerType.innerText = `충전기타입 : ${evChgerTypeConvert(ev.chgerType)}`;
+    const stat = document.createElement('div');
+    stat.className = 'desc-inner';
+    stat.innerText = `충전기상태 : ${evStatConvert(ev.stat)}`;
+    const powerType = document.createElement('div');
+    powerType.className = 'desc-inner';
+    powerType.innerText = `충전량 : ${ev.powerType}`;
+    const useTime = document.createElement('div');
+    useTime.className = 'desc-inner';
+    useTime.innerText = `이용가능시간 : ${ev.useTime}`;
+    const note = ev.note ? document.createElement('div') : null;
+    if (note) {
+      note.className = 'desc-inner';
+      note.innerText = `충전소 안내 : ${ev.note}`;
+    }
 
-      wrap.append(info);
-      info.append(top, desc);
-      top.append(title, close);
-      desc.append(addr, busiCall, chgerType, stat, powerType, useTime);
-      if (note) desc.append(note);
+    wrap.append(info);
+    info.append(top, desc);
+    top.append(title, close);
+    desc.append(addr, busiCall, chgerType, stat, powerType, useTime);
+    if (note) desc.append(note);
 
-      const overlay = new kakao.maps.CustomOverlay({
-        content: wrap,
-        position: marker.getPosition(),
-        map: map,
-      });
-
-      close.addEventListener('click', () => overlay.setMap(null));
-
-      return overlay;
+    const overlay = new kakao.maps.CustomOverlay({
+      content: wrap,
+      position: marker.getPosition(),
+      map: map,
     });
+
+    close.addEventListener('click', () => overlay.setMap(null));
+    // setEvOverlay((): any => {
+    //   if (evOverlay) evOverlay.setMap(null);
+
+    //   const wrap = document.createElement('div');
+    //   wrap.className = 'wrap';
+    //   const info = document.createElement('div');
+    //   info.className = 'info';
+    //   const top = document.createElement('div');
+    //   top.className = 'top';
+    //   const title = document.createElement('div');
+    //   title.className = 'title';
+    //   title.innerText = ev.statNm;
+    //   const close = document.createElement('div');
+    //   close.className = 'close';
+    //   close.title = '닫기';
+    //   const desc = document.createElement('div');
+    //   desc.className = 'desc';
+    //   const addr = document.createElement('div');
+    //   addr.className = 'desc-inner';
+    //   addr.innerText = `주소 : ${ev.addr}`;
+    //   const busiCall = document.createElement('div');
+    //   busiCall.className = 'desc-inner';
+    //   busiCall.innerText = `전화 : ${ev.busiCall}`;
+    //   const chgerType = document.createElement('div');
+    //   chgerType.className = 'desc-inner';
+    //   chgerType.innerText = `충전기타입 : ${evChgerTypeConvert(ev.chgerType)}`;
+    //   const stat = document.createElement('div');
+    //   stat.className = 'desc-inner';
+    //   stat.innerText = `충전기상태 : ${evStatConvert(ev.stat)}`;
+    //   const powerType = document.createElement('div');
+    //   powerType.className = 'desc-inner';
+    //   powerType.innerText = `충전량 : ${ev.powerType}`;
+    //   const useTime = document.createElement('div');
+    //   useTime.className = 'desc-inner';
+    //   useTime.innerText = `이용가능시간 : ${ev.useTime}`;
+    //   const note = ev.note ? document.createElement('div') : null;
+    //   if (note) {
+    //     note.className = 'desc-inner';
+    //     note.innerText = `충전소 안내 : ${ev.note}`;
+    //   }
+
+    //   wrap.append(info);
+    //   info.append(top, desc);
+    //   top.append(title, close);
+    //   desc.append(addr, busiCall, chgerType, stat, powerType, useTime);
+    //   if (note) desc.append(note);
+
+    //   const overlay = new kakao.maps.CustomOverlay({
+    //     content: wrap,
+    //     position: marker.getPosition(),
+    //     map: map,
+    //   });
+
+    //   close.addEventListener('click', () => overlay.setMap(null));
+
+    //   return overlay;
+    // });
   };
 
   const setHydrogenOverlayMap = (el: MapMarkerInfo, marker: any) => {
