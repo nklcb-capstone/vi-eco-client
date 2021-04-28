@@ -37,31 +37,6 @@ interface Props {
   pageMode: boolean;
 }
 
-// let lat: number = 37.555178;
-// let lon: number = 126.970756;
-
-// function getLocation() {
-//   if (navigator.geolocation) {
-//     // GPS를 지원하면
-//     navigator.geolocation.getCurrentPosition(
-//       function (position) {
-//         lat = position.coords.latitude;
-//         lon = position.coords.longitude;
-//       },
-//       function (error) {
-//         console.error(error);
-//       },
-//       {
-//         enableHighAccuracy: true,
-//         //maximumAge: 0,
-//         //timeout: Infinity,
-//       },
-//     );
-//   } else {
-//     alert('GPS를 지원하지 않습니다');
-//   }
-// }
-
 const mapOptions = {
   //지도 기본 위치값 서울역 좌표로 지정
   center: new window.kakao.maps.LatLng(37.555178, 126.970756),
