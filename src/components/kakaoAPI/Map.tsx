@@ -25,7 +25,12 @@ const { kakao } = window;
 
 //
 //
-//
+// //
+let ___EV_OVERLAYS___: any[] = [];
+let ___HYDROGEN_OVERLAYS___: any[] = [];
+let ___EV_OVERLAY_CLOSINGS___: any[] = [];
+let ___HYDROGEN_OVERLAYS_CLOSINGS___: any[] = [];
+
 const ID_CUSTOM_OVERLAY_CLOSE = 'customOverlayClose';
 
 interface MarkerOriginalEvent<T> {
@@ -186,10 +191,18 @@ const Map: React.FC<Props> = ({ pageMode }) => {
         // EV
         loadEvs();
         unsetHydrogenMarkersMap();
+        ___HYDROGEN_OVERLAYS_CLOSINGS___.forEach(f => {
+          f();
+        })
+        ___HYDROGEN_OVERLAYS_CLOSINGS___ = []
       } else {
         // Hydrogen
         setHydrogenMarkersMap();
         unsetEvMarkersMap();
+        ___EV_OVERLAY_CLOSINGS___.forEach(f => {
+          f();
+        })
+        ___EV_OVERLAY_CLOSINGS___ = []
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -312,6 +325,7 @@ const Map: React.FC<Props> = ({ pageMode }) => {
     });
 
     close.addEventListener('click', () => overlay.setMap(null));
+    ___EV_OVERLAY_CLOSINGS___.push(() => overlay.setMap(null));
     // setEvOverlay((): any => {
     //   if (evOverlay) evOverlay.setMap(null);
 
@@ -416,6 +430,7 @@ const Map: React.FC<Props> = ({ pageMode }) => {
     });
 
     close.addEventListener('click', () => overlay.setMap(null));
+    ___HYDROGEN_OVERLAYS_CLOSINGS___.push(() => overlay.setMap(null));
     // setHydrogenOverlay((): any => {
     //   const wrap = document.createElement('div');
     //   wrap.className = 'wrap';
