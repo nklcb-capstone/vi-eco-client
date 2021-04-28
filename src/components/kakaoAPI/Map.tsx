@@ -25,7 +25,12 @@ const { kakao } = window;
 
 //
 //
-//
+// //
+let ___EV_OVERLAYS___: any[] = [];
+let ___HYDROGEN_OVERLAYS___: any[] = [];
+let ___EV_OVERLAY_CLOSINGS___: any[] = [];
+let ___HYDROGEN_OVERLAYS_CLOSINGS___: any[] = [];
+
 const ID_CUSTOM_OVERLAY_CLOSE = 'customOverlayClose';
 
 interface MarkerOriginalEvent<T> {
@@ -186,10 +191,18 @@ const Map: React.FC<Props> = ({ pageMode }) => {
         // EV
         loadEvs();
         unsetHydrogenMarkersMap();
+        ___HYDROGEN_OVERLAYS_CLOSINGS___.forEach(f => {
+          f();
+        })
+        ___HYDROGEN_OVERLAYS_CLOSINGS___ = []
       } else {
         // Hydrogen
         setHydrogenMarkersMap();
         unsetEvMarkersMap();
+        ___EV_OVERLAY_CLOSINGS___.forEach(f => {
+          f();
+        })
+        ___EV_OVERLAY_CLOSINGS___ = []
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -312,6 +325,7 @@ const Map: React.FC<Props> = ({ pageMode }) => {
     });
 
     close.addEventListener('click', () => overlay.setMap(null));
+    ___EV_OVERLAY_CLOSINGS___.push(() => overlay.setMap(null));
     // setEvOverlay((): any => {
     //   if (evOverlay) evOverlay.setMap(null);
 
@@ -372,30 +386,99 @@ const Map: React.FC<Props> = ({ pageMode }) => {
   };
 
   const setHydrogenOverlayMap = (el: MapMarkerInfo, marker: any) => {
-    setHydrogenOverlay((): any => {
-      const overlay = new kakao.maps.CustomOverlay({
-        //이부분에 윈도우 정보 html로 작성
-        content: `<div class="wrap">
-        <div class="info">
-          <div class="top">
-            <div class="title">
-              <a href="https://map.kakao.com/link/to/${el.address},${el.lat},${el.lng}">${el.title}</a>
-            <div class="close" id=${ID_CUSTOM_OVERLAY_CLOSE} title="닫기"></div>
-          </div>  
-          <div class="desc">
-            <div>주소 : ${el.address}</div>  
-            <div>전화 : ${el.tell}</div> 
-            <div>요금 : ${el.price}</div>
-            <div>영업 시간 : ${el.time}</div>
-          </div>
-        </div>
-      </div>`,
-        position: marker.getPosition(),
-        map: map,
-      });
+    const wrap = document.createElement('div');
+    wrap.className = 'wrap';
+    const info = document.createElement('div');
+    info.className = 'info';
+    const top = document.createElement('div');
+    top.className = 'top';
+    const title = document.createElement('div');
+    title.className = 'title';
+    title.innerText = el.title;
+    const link = document.createElement('a');
+    link.setAttribute('href', `https://map.kakao.com/link/to/${el.address},${el.lat},${el.lng}`);
+    link.setAttribute('target', '_blank');
+    link.appendChild(title);
+    const close = document.createElement('div');
+    close.className = 'close';
+    close.title = '닫기';
+    const desc = document.createElement('div');
+    desc.className = 'desc';
+    const address = document.createElement('div');
+    address.className = 'desc-inner';
+    address.innerText = `주소 : ${el.address}`;
+    const tell = document.createElement('div');
+    tell.className = 'desc-inner';
+    tell.innerText = `전화 : ${el.tell}`;
+    const price = document.createElement('div');
+    price.className = 'desc-inner';
+    price.innerText = `요금 : ${el.price}`;
+    const time = document.createElement('div');
+    time.className = 'desc-inner';
+    time.innerText = `영업시간 : ${el.time}`;
 
-      return overlay;
+    wrap.append(info);
+    info.append(top, desc);
+    top.append(link, close);
+    desc.append(address, tell, price, time);
+
+    const overlay = new kakao.maps.CustomOverlay({
+      //이부분에 윈도우 정보 html로 작성
+      content: wrap,
+      position: marker.getPosition(),
+      map: map,
     });
+
+    close.addEventListener('click', () => overlay.setMap(null));
+    ___HYDROGEN_OVERLAYS_CLOSINGS___.push(() => overlay.setMap(null));
+    // setHydrogenOverlay((): any => {
+    //   const wrap = document.createElement('div');
+    //   wrap.className = 'wrap';
+    //   const info = document.createElement('div');
+    //   info.className = 'info';
+    //   const top = document.createElement('div');
+    //   top.className = 'top';
+    //   const title = document.createElement('div');
+    //   title.className = 'title';
+    //   title.innerText = el.title;
+    //   const link = document.createElement('a');
+    //   link.setAttribute('href', `https://map.kakao.com/link/to/${el.address},${el.lat},${el.lng}`);
+    //   link.setAttribute('target', '_blank');
+    //   link.appendChild(title);
+    //   const close = document.createElement('div');
+    //   close.className = 'close';
+    //   close.title = '닫기';
+    //   const desc = document.createElement('div');
+    //   desc.className = 'desc';
+    //   const address = document.createElement('div');
+    //   address.className = 'desc-inner';
+    //   address.innerText = `주소 : ${el.address}`;
+    //   const tell = document.createElement('div');
+    //   tell.className = 'desc-inner';
+    //   tell.innerText = `전화 : ${el.tell}`;
+    //   const price = document.createElement('div');
+    //   price.className = 'desc-inner';
+    //   price.innerText = `요금 : ${el.price}`;
+    //   const time = document.createElement('div');
+    //   time.className = 'desc-inner';
+    //   time.innerText = `영업시간 : ${el.time}`;
+
+    //   wrap.append(info);
+    //   info.append(top, desc);
+    //   top.append(link, close);
+    //   desc.append(address, tell, price, time);
+
+    //   const overlay = new kakao.maps.CustomOverlay({
+    //     //이부분에 윈도우 정보 html로 작성
+    //     content: wrap,
+    //     position: marker.getPosition(),
+    //     map: map,
+    //   });
+
+    //   close.addEventListener('click', () => overlay.setMap(null));
+
+    //   return overlay;
+    // });
   };
 
   //
