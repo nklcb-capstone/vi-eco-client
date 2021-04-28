@@ -1,6 +1,6 @@
 import axios, { AxiosRequestConfig } from 'axios';
 
-const API_BASE_URL: string = 'http://ec2-3-36-231-201.ap-northeast-2.compute.amazonaws.com:8080/api';
+const API_BASE_URL: string = 'https://vi-eco.jseung.me/api';
 
 const initialConfig: AxiosRequestConfig = Object.freeze({ baseURL: API_BASE_URL });
 
