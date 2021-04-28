@@ -16,22 +16,16 @@ function App(): React.ReactElement {
   };
   return (
     <div className="App">
-      {/* //레이아웃 적용 버전 */}
-      <header></header>
-      {/* <body>
-        <Map pageMode={pageMode}></Map>
-      </body> */}
-      {/* <footer>
-        <Layout pageName={pageName} pageChange={pageChange}></Layout>
-      </footer> */}
-      {/* <Route path="/" exact={true} component={Map}></Route> */}
-
       <HashRouter>
+        <body>
+          <Route path="/" exact={true} render={() => <Map pageMode={pageMode}></Map>}></Route>
+        </body>
+        <body>
+          <Route path="/info" exact={true} component={CarInfor}></Route>
+        </body>
         <footer>
           <Layout pageName={pageName} pageChange={pageChange}></Layout>
         </footer>
-        <Route path="/" exact={true} render={() => <Map pageMode={pageMode}></Map>}></Route>
-        <Route path="/info" exact={true} component={CarInfor}></Route>
       </HashRouter>
     </div>
   );
