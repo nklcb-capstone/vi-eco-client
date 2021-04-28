@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/vi-eco-client/static/css/main.7e444268.chunk.css",
-    "main.js": "/vi-eco-client/static/js/main.056677e7.chunk.js",
-    "main.js.map": "/vi-eco-client/static/js/main.056677e7.chunk.js.map",
+    "main.js": "/vi-eco-client/static/js/main.c03947e1.chunk.js",
+    "main.js.map": "/vi-eco-client/static/js/main.c03947e1.chunk.js.map",
     "runtime-main.js": "/vi-eco-client/static/js/runtime-main.5993baa0.js",
     "runtime-main.js.map": "/vi-eco-client/static/js/runtime-main.5993baa0.js.map",
     "static/css/2.cefea94e.chunk.css": "/vi-eco-client/static/css/2.cefea94e.chunk.css",
@@ -20,6 +20,6 @@
     "static/css/2.cefea94e.chunk.css",
     "static/js/2.81f173e5.chunk.js",
     "static/css/main.7e444268.chunk.css",
-    "static/js/main.056677e7.chunk.js"
+    "static/js/main.c03947e1.chunk.js"
   ]
 }
