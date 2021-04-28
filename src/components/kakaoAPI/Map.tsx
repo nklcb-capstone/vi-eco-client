@@ -8,6 +8,7 @@ import { Button, Input, Form } from 'antd';
 import cssRules from './Map.module.scss';
 import api from 'common/api/api';
 import { EV, MapMarkerInfo } from 'common/types';
+import { evChgerTypeConvert, evStatConvert } from 'common/helpers';
 
 //
 // Kakao
@@ -211,25 +212,57 @@ const Map: React.FC<Props> = ({ pageMode }) => {
 
   const setEvOverlayMap = (ev: EV, marker: any) => {
     setEvOverlay((): any => {
+      const wrap = document.createElement('div');
+      wrap.className = 'wrap';
+      const info = document.createElement('div');
+      info.className = 'info';
+      const top = document.createElement('div');
+      top.className = 'top';
+      const title = document.createElement('div');
+      title.className = 'title';
+      title.innerText = ev.statNm;
+      const close = document.createElement('div');
+      close.className = 'close';
+      close.title = '닫기';
+      const desc = document.createElement('div');
+      desc.className = 'desc';
+      const addr = document.createElement('div');
+      addr.className = 'desc-inner';
+      addr.innerText = `주소 : ${ev.addr}`;
+      const busiCall = document.createElement('div');
+      busiCall.className = 'desc-inner';
+      busiCall.innerText = `전화 : ${ev.busiCall}`;
+      const chgerType = document.createElement('div');
+      chgerType.className = 'desc-inner';
+      chgerType.innerText = `충전기타입 : ${evChgerTypeConvert(ev.chgerType)}`;
+      const stat = document.createElement('div');
+      stat.className = 'desc-inner';
+      stat.innerText = `충전기상태 : ${evStatConvert(ev.stat)}`;
+      const powerType = document.createElement('div');
+      powerType.className = 'desc-inner';
+      powerType.innerText = `충전량 : ${ev.powerType}`;
+      const useTime = document.createElement('div');
+      useTime.className = 'desc-inner';
+      useTime.innerText = `이용가능시간 : ${ev.useTime}`;
+      const note = ev.note ? document.createElement('div') : null;
+      if (note) {
+        note.className = 'desc-inner';
+        note.innerText = `충전소 안내 : ${ev.note}`;
+      }
+
+      wrap.append(info);
+      info.append(top, desc);
+      top.append(title, close);
+      desc.append(addr, busiCall, chgerType, stat, powerType, useTime);
+      if (note) desc.append(note);
+
       const overlay = new kakao.maps.CustomOverlay({
-        //이부분에 윈도우 정보 html로 작성
-        content: `<div class="wrap">
-          <div class="info">
-            <div class="top">
-              <div class="title">${ev.statNm}
-              <div class="close" title="닫기" id=${ID_CUSTOM_OVERLAY_CLOSE}></div>
-            </div>  
-            <div class="desc">
-              <div>주소 : ${ev.addr}</div>  
-              <div>전화 : ${ev.busiCall}</div> 
-              <div>요금 : ${ev}</div>
-              <div>영업 시간 : ${ev}</div>
-            </div>
-          </div>
-        </div>`,
+        content: wrap,
         position: marker.getPosition(),
         map: map,
       });
+
+      close.addEventListener('click', () => overlay.setMap(null));
 
       return overlay;
     });

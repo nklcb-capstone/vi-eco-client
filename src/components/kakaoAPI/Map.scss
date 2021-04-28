@@ -2,8 +2,6 @@
   position: absolute;
   left: 0;
   bottom: 40px;
-  width: 320px;
-  height: 132px;
   margin-left: -144px;
   text-align: left;
   overflow: hidden;
@@ -19,7 +17,6 @@
 
 .wrap .info {
   width: 390px;
-  height: 140px;
   border-radius: 5px;
   border-bottom: 2px solid #ccc;
   border-right: 1px solid #ccc;
@@ -66,8 +63,10 @@
 }
 .info .desc {
   position: relative;
-  margin: 13px 0 0 20px;
-  height: 75px;
+  margin: 13px 0 13px 20px;
+}
+.info .desc .desc-inner {
+  white-space: normal;
 }
 .desc .ellipsis {
   overflow: hidden;
@@ -81,7 +80,6 @@
     left: 0;
     bottom: 40px;
     width: 300px;
-    height: 132px;
     margin-left: -144px;
     text-align: left;
     overflow: hidden;
@@ -97,7 +95,6 @@
 
   .wrap .info {
     width: 310px;
-    height: 140px;
     border-radius: 5px;
     border-bottom: 2px solid #ccc;
     border-right: 1px solid #ccc;
