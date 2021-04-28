@@ -11,7 +11,7 @@ function App(): React.ReactElement {
   const [pageName, setPageName] = useState('전기차 충전소 위치');
   const pageChange = () => {
     setPageMode(!pageMode);
-    setPageName(pageMode ? '전기차 충전소 위치' : '수소차 충전소 위치');
+    setPageName(pageMode ? '수소차 충전소 위치' : '전기차 충전소 위치');
     console.log(pageName);
   };
   return (
