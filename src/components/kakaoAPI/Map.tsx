@@ -177,7 +177,7 @@ const Map: React.FC<Props> = ({ pageMode }) => {
   const [evs, setEvs] = useState<EV[]>([]);
 
   const loadEvs = async () => {
-    const res = await api({ url: '/car/electric/station', params: { numOfRows: 500, pageNo: 1 } });
+    const res = await api({ url: '/car/electric/station', params: { numOfRows: 1000, pageNo: 1 } });
     const next: typeof evs = res?.data?.response?.body?.items?.item;
     setEvs(next);
   };
@@ -191,18 +191,18 @@ const Map: React.FC<Props> = ({ pageMode }) => {
         // EV
         loadEvs();
         unsetHydrogenMarkersMap();
-        ___HYDROGEN_OVERLAYS_CLOSINGS___.forEach(f => {
+        ___HYDROGEN_OVERLAYS_CLOSINGS___.forEach((f) => {
           f();
-        })
-        ___HYDROGEN_OVERLAYS_CLOSINGS___ = []
+        });
+        ___HYDROGEN_OVERLAYS_CLOSINGS___ = [];
       } else {
         // Hydrogen
         setHydrogenMarkersMap();
         unsetEvMarkersMap();
-        ___EV_OVERLAY_CLOSINGS___.forEach(f => {
+        ___EV_OVERLAY_CLOSINGS___.forEach((f) => {
           f();
-        })
-        ___EV_OVERLAY_CLOSINGS___ = []
+        });
+        ___EV_OVERLAY_CLOSINGS___ = [];
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
