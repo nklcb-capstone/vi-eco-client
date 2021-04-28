@@ -474,7 +474,7 @@ export const markerdata: MapMarkerInfo[] = [
   {
     id: 48,
     title: '전주 제1호 수소충전소',
-    address: '전북 전주시 덕진구 송천동2가 1186-2,1190,1191',
+    address: '전북 전주시 덕진구 송천동2가',
     time: '연중무휴, 08시~22시',
     price: '8,800원',
     tell: '',
