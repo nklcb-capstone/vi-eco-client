@@ -47,7 +47,7 @@ const CarInfo = () => {
                 hoverable
                 style={{ paddingTop: 20, width: 300, height: 200 }}
                 cover={
-                  <a href={el.link} target="_blank">
+                  <a href={el.link} target="_blank" rel="noreferrer">
                     <img src={el.pictureName} />
                   </a>
                 }
