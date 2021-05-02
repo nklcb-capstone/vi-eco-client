@@ -485,13 +485,18 @@ const Map: React.FC<Props> = ({ pageMode }) => {
   // Render
   //
 
-  //css trick to viewport units on mobile
+  //모바일 브라우저(Chorme, Firefox)대응 vh
   let vh = window.innerHeight * 0.01;
   document.documentElement.style.setProperty('--vh', `${vh}px`);
 
+  window.addEventListener('resize', () => {
+    let vh = window.innerHeight * 0.01;
+    document.documentElement.style.setProperty('--vh', `${vh}px`);
+  });
+
   return (
     <div className={cssRules.Map}>
-      <div id="map" ref={mapContainerRef} style={{ width: '100vw', height: 'calc(var(--vh, 1vh) * 100 - 53px)' }} />
+      <div id="map" ref={mapContainerRef} style={{ width: '100vw', height: 'calc(var(--vh, 1vh)*100 - 53px)' }} />
     </div>
   );
 };
