@@ -177,7 +177,7 @@ const Map: React.FC<Props> = ({ pageMode }) => {
   const [evs, setEvs] = useState<EV[]>([]);
 
   const loadEvs = async () => {
-    const res = await api({ url: '/car/electric/station', params: { numOfRows: 1000, pageNo: 1 } });
+    const res = await api({ url: '/car/electric/station', params: { numOfRows: 500, pageNo: 1 } });
     const next: typeof evs = res?.data?.response?.body?.items?.item;
     setEvs(next);
   };
@@ -485,9 +485,18 @@ const Map: React.FC<Props> = ({ pageMode }) => {
   // Render
   //
 
+  //모바일 브라우저(Chorme, Firefox)대응 vh
+  let vh = window.innerHeight * 0.01;
+  document.documentElement.style.setProperty('--vh', `${vh}px`);
+
+  window.addEventListener('resize', () => {
+    let vh = window.innerHeight * 0.01;
+    document.documentElement.style.setProperty('--vh', `${vh}px`);
+  });
+
   return (
     <div className={cssRules.Map}>
-      <div id="map" ref={mapContainerRef} style={{ width: '100vw', height: 'calc(100vh - 53px)' }} />
+      <div id="map" ref={mapContainerRef} style={{ width: '100vw', height: 'calc(var(--vh, 1vh)*100 - 53px)' }} />
     </div>
   );
 };
