@@ -3,8 +3,9 @@ import './App.scss';
 import Map from 'components/kakaoAPI/Map';
 import Layout from 'components/viecoLayout/viecoLayout';
 import { HashRouter, Route } from 'react-router-dom';
-import CarInfor from 'components/Infor/CarInfor';
-import { homedir } from 'node:os';
+import Info from 'components/Infor/Info';
+import CarInfo from 'components/Infor/CarInfo';
+import NewInfo from 'components/Infor/NewInfo';
 
 function App(): React.ReactElement {
   const [pageMode, setPageMode] = useState(true);
@@ -19,9 +20,9 @@ function App(): React.ReactElement {
       <HashRouter>
         <body>
           <Route path="/" exact={true} render={() => <Map pageMode={pageMode}></Map>}></Route>
-        </body>
-        <body>
-          <Route path="/info" exact={true} component={CarInfor}></Route>
+          <Route path="/carinfo" exact={true} component={CarInfo}></Route>
+          <Route path="/info" exact={true} component={Info}></Route>
+          <Route path="/newinfo" exact={true} component={NewInfo}></Route>
         </body>
         <footer>
           <Layout pageName={pageName} pageChange={pageChange}></Layout>

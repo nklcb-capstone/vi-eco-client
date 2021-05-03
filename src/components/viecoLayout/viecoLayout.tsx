@@ -1,9 +1,6 @@
 import React from 'react';
-import { Layout } from 'antd';
 import './viecoLayout.scss';
 import { Link } from 'react-router-dom';
-import { HashRouter, Route } from 'react-router-dom';
-import CarInfor from 'components/Infor/CarInfor';
 
 interface Props {
   pageChange: () => void;
@@ -21,7 +18,7 @@ const ViecoLayout: React.FC<Props> = ({ pageChange, pageName }) => {
         </span>
 
         <span>
-          <Link to="info">관련 정보</Link>
+          <Link to="carinfo">관련 정보</Link>
         </span>
         {
           <span id="modchange" onClick={pageChange}>
