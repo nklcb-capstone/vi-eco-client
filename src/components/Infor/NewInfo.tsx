@@ -40,10 +40,7 @@ const NewInfo = () => {
     setNewList(data);
   };
 
-  // const onSearch = (value: string) => void SetSearch(value);
-
   const onSearch = (value: any): void => {
-    // console.log(e.target.value);
     console.log(value);
     setSearch(value);
   };
@@ -71,28 +68,28 @@ const NewInfo = () => {
           </Menu.Item>
         </Menu>
       </Header>
-      <Divider orientation="left">전기차 뉴스</Divider>
-
-      <Search
-        style={{ width: '50%', paddingLeft: '50px', paddingBottom: '20px' }}
-        placeholder="input search text"
-        allowClear
-        enterButton="Search"
-        size="large"
-        onSearch={onSearch}
-      />
 
       <Content style={{ padding: '0 50px', textAlign: 'left' }}>
+        <Divider orientation="left">전기차 뉴스</Divider>
+
+        <Search
+          style={{ paddingBottom: '20px' }}
+          placeholder="input search text"
+          allowClear
+          enterButton="Search"
+          size="large"
+          onSearch={onSearch}
+        />
         <div className="news-layout-content" style={{ minHeight: '1080px', padding: '24px', background: '#fff' }}>
           <List
             itemLayout="vertical"
-            size="large"
+            // size="large"
             //페이지 이동 바 부분
             pagination={{
               onChange: (page) => {
                 // console.log(page);
               },
-              pageSize: 5, //한 페이지에 몇 개를 보여줄 것인지
+              pageSize: 6, //한 페이지에 몇 개를 보여줄 것인지
             }}
             dataSource={newList}
             renderItem={(item: any) => (
