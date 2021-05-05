@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Layout, Menu } from 'antd';
+import { Layout, Menu, Space, Input, List, Divider } from 'antd';
 import { Link } from 'react-router-dom';
-import { List, Divider, Space } from 'antd';
 import { MessageOutlined, LikeOutlined, StarOutlined } from '@ant-design/icons';
+import axios from 'axios';
+
+const { Search } = Input;
 
 const { Header, Content, Footer } = Layout;
-
 const listData: any[] | undefined = [];
 for (let i = 0; i < 23; i++) {
   listData.push({
@@ -15,7 +16,7 @@ for (let i = 0; i < 23; i++) {
     author: '조재환',
     section: 'culture',
     date: '2021-04-07',
-    description: 'ZDNet Korea 조재환'
+    description: 'ZDNet Korea 조재환',
   });
 }
 
@@ -32,6 +33,25 @@ const IconText = ({ icon, text }: IProps) => (
 );
 
 const NewInfo = () => {
+  const [newList, setNewList] = useState<any>([]);
+  const [search, setSearch] = useState<any>('');
+  const getDate = async () => {
+    const { data } = await axios.get(`https://vi-eco.jseung.me/api/news/electric/search?title=${search}`);
+    setNewList(data);
+  };
+
+  // const onSearch = (value: string) => void SetSearch(value);
+
+  const onSearch = (value: any): void => {
+    // console.log(e.target.value);
+    console.log(value);
+    setSearch(value);
+  };
+
+  useEffect(() => {
+    getDate();
+  }, [search]);
+
   return (
     <Layout className="layout">
       <Header>
@@ -51,7 +71,17 @@ const NewInfo = () => {
           </Menu.Item>
         </Menu>
       </Header>
-      <Divider orientation="left">전기차</Divider>
+      <Divider orientation="left">전기차 뉴스</Divider>
+
+      <Search
+        style={{ width: '50%', paddingLeft: '50px', paddingBottom: '20px' }}
+        placeholder="input search text"
+        allowClear
+        enterButton="Search"
+        size="large"
+        onSearch={onSearch}
+      />
+
       <Content style={{ padding: '0 50px', textAlign: 'left' }}>
         <div className="news-layout-content" style={{ minHeight: '1080px', padding: '24px', background: '#fff' }}>
           <List
@@ -60,21 +90,28 @@ const NewInfo = () => {
             //페이지 이동 바 부분
             pagination={{
               onChange: (page) => {
-                console.log(page);
+                // console.log(page);
               },
               pageSize: 5, //한 페이지에 몇 개를 보여줄 것인지
             }}
-            dataSource={listData}
-            renderItem={(item) => (
+            dataSource={newList}
+            renderItem={(item: any) => (
               <List.Item
-                key={item.title}
+                key={item.id}
                 actions={[
-                  <IconText icon={StarOutlined} text="156" key="list-vertical-star-o" />,
-                  <IconText icon={LikeOutlined} text="156" key="list-vertical-like-o" />,
-                  <IconText icon={MessageOutlined} text="2" key="list-vertical-message" />,
+                  <IconText icon={StarOutlined} text="0" key="list-vertical-star-o" />,
+                  <IconText icon={LikeOutlined} text="0" key="list-vertical-like-o" />,
+                  <IconText icon={MessageOutlined} text="0" key="list-vertical-message" />,
                 ]}
               >
-                <List.Item.Meta title={<a href={item.href}>{item.title}</a>} description={item.description} />
+                <List.Item.Meta
+                  title={
+                    <a href={item.url} target="_blank">
+                      {item.title}
+                    </a>
+                  }
+                  description={item.publisher}
+                />
                 {item.date}
               </List.Item>
             )}
