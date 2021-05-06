@@ -3,7 +3,8 @@ import { Layout, Menu, Space, Input, List, Divider } from 'antd';
 import { Link } from 'react-router-dom';
 import { MessageOutlined, LikeOutlined, StarOutlined } from '@ant-design/icons';
 import axios from 'axios';
-
+import Nav from './Nav';
+import { get } from 'node:http';
 const { Search } = Input;
 
 const { Header, Content, Footer } = Layout;
@@ -25,6 +26,10 @@ interface IProps {
   text: any;
 }
 
+type Props = {
+  pageMode: boolean;
+};
+
 const IconText = ({ icon, text }: IProps) => (
   <Space>
     {React.createElement(icon)}
@@ -32,16 +37,28 @@ const IconText = ({ icon, text }: IProps) => (
   </Space>
 );
 
-const NewInfo = () => {
+const NewInfo: React.FC<Props> = ({ pageMode }) => {
   const [newList, setNewList] = useState<any>([]);
-  const [search, setSearch] = useState<any>('');
+  const [search, setSearch] = useState<string>('');
+  const [mode, setMode] = useState<string>('');
+  const [name, setName] = useState<string>('');
+
   const getDate = async () => {
-    const { data } = await axios.get(`https://vi-eco.jseung.me/api/news/electric/search?title=${search}`);
+    const { data } = await axios.get(`https://vi-eco.jseung.me/api/news/${mode}/search?title=${search}`);
     setNewList(data);
   };
 
+  const changeMode = () => {
+    if (pageMode) {
+      setMode('electric');
+      setName('전기차 뉴스');
+    } else {
+      setMode('hydrogen');
+      setName('수소차 뉴스');
+    }
+  };
+
   const onSearch = (value: any): void => {
-    console.log(value);
     setSearch(value);
   };
 
@@ -49,28 +66,19 @@ const NewInfo = () => {
     getDate();
   }, [search]);
 
+  useEffect(() => {
+    changeMode();
+  }, [pageMode]);
+  useEffect(() => {
+    getDate();
+  }, [name]);
+
   return (
     <Layout className="layout">
-      <Header>
-        <div className="logo" />
-        <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['3']}>
-          <Menu.Item key="1">
-            차량 모델
-            <Link to="carinfo"></Link>
-          </Menu.Item>
-          <Menu.Item key="2">
-            차량 정보
-            <Link to="info"></Link>
-          </Menu.Item>
-          <Menu.Item key="3">
-            뉴스
-            <Link to="newinfo"></Link>
-          </Menu.Item>
-        </Menu>
-      </Header>
+      <Nav></Nav>
 
       <Content style={{ padding: '0 50px', textAlign: 'left' }}>
-        <Divider orientation="left">전기차 뉴스</Divider>
+        <Divider orientation="left">{name}</Divider>
 
         <Search
           style={{ paddingBottom: '20px' }}

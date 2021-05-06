@@ -177,7 +177,7 @@ const Map: React.FC<Props> = ({ pageMode }) => {
   const [evs, setEvs] = useState<EV[]>([]);
 
   const loadEvs = async () => {
-    const res = await api({ url: '/car/electric/station', params: { numOfRows: 500, pageNo: 1 } });
+    const res = await api({ url: '/car/electric/station', params: { numOfRows: 1000, pageNo: 1 } });
     const next: typeof evs = res?.data?.response?.body?.items?.item;
     setEvs(next);
   };

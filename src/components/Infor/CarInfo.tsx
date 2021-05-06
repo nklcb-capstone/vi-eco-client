@@ -5,56 +5,60 @@ import { Layout, Menu } from 'antd';
 import { Space, Input, List } from 'antd';
 import { Row, Col, Divider } from 'antd';
 import { Card } from 'antd';
-import { Pagination } from 'antd';
-import { Link } from 'react-router-dom';
-
+import Nav from './Nav';
 const { Header, Content, Footer } = Layout;
 const { Meta } = Card;
 const { Search } = Input;
 
-const CarInfo = () => {
-  const cols = [];
-  // 행열 가이드      3 3 3
-  // row : 2 (행)  2 ㅁㅁㅁ
-  // col : 3 (열)  2 ㅁㅁㅁ
-  const [carList, setCarList] = useState([]);
-  const [search, setSearch] = useState<any>('');
+type Props = {
+  pageMode: boolean;
+};
 
+const CarInfo: React.FC<Props> = ({ pageMode }) => {
+  const [carList, setCarList] = useState([]);
+  const [search, setSearch] = useState<string>('');
+  const [mode, setMode] = useState<string>('');
+  const [name, setName] = useState<string>('');
+
+  //https://vi-eco.jseung.me/api/car/information/search?carType=[전기차or수소차]&carName=[자동차이름]
   const getDate = async () => {
-    const { data } = await axios.get(`https://vi-eco.jseung.me/api/car/information/search?carName=${search}`);
+    const { data } = await axios.get(
+      `https://vi-eco.jseung.me/api/car/information/search?carType=${mode}&carName=${search}`,
+    );
     setCarList(data);
   };
 
   const onSearch = (value: any): void => {
-    console.log(value);
     setSearch(value);
   };
+
+  const changeMode = () => {
+    if (pageMode) {
+      setMode('전기차');
+      setName('전기차 모델');
+    } else {
+      setMode('수소차');
+      setName('수소차 모델');
+    }
+  };
+
+  useEffect(() => {
+    getDate();
+  }, [name]);
 
   useEffect(() => {
     getDate();
   }, [search]);
 
+  useEffect(() => {
+    changeMode();
+  }, [pageMode]);
+
   return (
     <Layout className="layout">
-      <Header>
-        <div className="logo" />
-        <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['1']}>
-          <Menu.Item key="1">
-            차량 모델
-            <Link to="/carinfo"></Link>
-          </Menu.Item>
-          <Menu.Item key="2">
-            차량 정보
-            <Link to="/info"></Link>
-          </Menu.Item>
-          <Menu.Item key="3">
-            뉴스
-            <Link to="/newinfo"></Link>
-          </Menu.Item>
-        </Menu>
-      </Header>
+      <Nav></Nav>
       <Content style={{ padding: '0 50px' }}>
-        <Divider orientation="left">전기차</Divider>
+        <Divider orientation="left">{name}</Divider>
         <Search
           style={{ paddingBottom: '20px' }}
           placeholder="input search text"
