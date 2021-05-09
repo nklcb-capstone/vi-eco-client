@@ -39,3 +39,16 @@ export function evStatConvert(stat: EVStat): EVStatDesc {
       return '상태미확인';
   }
 }
+
+export function getLocation(
+  successCallback: PositionCallback,
+  errorCallback: PositionErrorCallback = (error) => {
+    console.error(error);
+  },
+  options?: PositionOptions,
+): void | false {
+  // GPS를 지원하지 않으면
+  if (!navigator.geolocation) return false;
+  // GPS를 지원하면
+  navigator.geolocation.getCurrentPosition(successCallback, errorCallback, { enableHighAccuracy: true, ...options });
+}

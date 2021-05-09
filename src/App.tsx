@@ -6,6 +6,7 @@ import { HashRouter, Route } from 'react-router-dom';
 import Info from 'components/Infor/Info';
 import CarInfo from 'components/Infor/CarInfo';
 import NewInfo from 'components/Infor/NewInfo';
+import PlaceMap from 'components/kakaoAPI/PlaceMap';
 
 function App(): React.ReactElement {
   const [pageMode, setPageMode] = useState(true);
@@ -26,6 +27,7 @@ function App(): React.ReactElement {
           <Route path="/carinfo" exact={true} render={() => <CarInfo pageMode={pageMode}></CarInfo>}></Route>
           <Route path="/info" exact={true} component={Info}></Route>
           <Route path="/newinfo" exact={true} render={() => <NewInfo pageMode={pageMode}></NewInfo>}></Route>
+          <Route path="/place" exact={true} render={() => <PlaceMap />}></Route>
         </body>
         <footer>
           <Layout pageName={pageName} pageChange={pageChange}></Layout>
