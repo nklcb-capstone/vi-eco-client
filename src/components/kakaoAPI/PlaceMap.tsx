@@ -47,6 +47,11 @@ placeOverlayContentNode.addEventListener('touchstart', kakao.maps.event.preventM
 
 placeOverlay.setContent(placeOverlayContentNode);
 
+//
+// Category
+//
+let ___currCategory___: KakaoCategory = 'CS2';
+
 function PlaceMap(): React.ReactElement {
   //
   // Map
@@ -79,6 +84,7 @@ function PlaceMap(): React.ReactElement {
   const onClickCategory: React.MouseEventHandler<HTMLLIElement> = (e) => {
     const id = e.currentTarget.id as KakaoCategory;
     placeOverlay.setMap(null);
+    ___currCategory___ = id;
     setCurrCategory(id);
     searchPlaces(id);
   };
@@ -88,17 +94,28 @@ function PlaceMap(): React.ReactElement {
   //
   const [ps, setPs] = useState<any>();
 
-  const searchPlaces = (category: typeof currCategory) => {
-    // Remove custom overlays on map
-    ___PLACE_OVERLAY_CLOSINGS___.forEach((closeOverlay) => {
-      closeOverlay();
-    });
-    ___PLACE_OVERLAY_CLOSINGS___ = [];
+  useEffect(() => {
+    if (map && ps) {
+      // Since searchPlaces works where ps is defined
+      kakao.maps.event.addListener(map, 'idle', searchPlaces);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [map, ps]);
 
-    // Remove markers on map
-    removeMarker();
+  const searchPlaces = (category: typeof currCategory = ___currCategory___) => {
+    if (ps) {
+      // if ps defined
+      // Remove custom overlays on map
+      ___PLACE_OVERLAY_CLOSINGS___.forEach((closeOverlay) => {
+        closeOverlay();
+      });
+      ___PLACE_OVERLAY_CLOSINGS___ = [];
 
-    ps.categorySearch(category, onAfterPlacesSearch, { useMapBounds: true });
+      // Remove markers on map
+      removeMarker();
+
+      ps.categorySearch(category, onAfterPlacesSearch, { useMapBounds: true });
+    }
   };
 
   const onAfterPlacesSearch = (data: any, status: any, pagination: any) => {
