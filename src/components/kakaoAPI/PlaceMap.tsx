@@ -173,9 +173,10 @@ function PlaceMap(): React.ReactElement {
 
   const displayPlaceInfo = (place: any) => {
     const placeInfo = document.createElement('div');
-    placeInfo.className = 'placeInfo';
+    placeInfo.className = 'placeinfo';
 
     const title = document.createElement('a');
+    title.className = 'title'
     title.href = place.place_url;
     title.target = '_blank';
     title.title = place.palce_name;
@@ -203,8 +204,9 @@ function PlaceMap(): React.ReactElement {
 
     const after = document.createElement('div');
     after.className = 'after';
+    console.log('placeInfo.outerHTML', placeInfo.outerHTML)
 
-    const content = placeInfo.innerHTML + after.innerHTML;
+    const content = placeInfo.outerHTML + after.outerHTML;
     placeOverlayContentNode.innerHTML = content;
     placeOverlay.setPosition(new kakao.maps.LatLng(place.y, place.x));
     placeOverlay.setMap(map);
