@@ -1,12 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import MediaQuery from 'react-responsive';
+
 import axios from 'axios';
-import { Layout, Menu } from 'antd';
-import { Space, Input, List } from 'antd';
-import { Row, Col, Divider } from 'antd';
-import { Card } from 'antd';
+import { Layout, Input, List, Divider, Card } from 'antd';
 import Nav from './Nav';
-const { Header, Content, Footer } = Layout;
+const { Content, Footer } = Layout;
 const { Meta } = Card;
 const { Search } = Input;
 
@@ -20,7 +17,6 @@ const CarInfo: React.FC<Props> = ({ pageMode }) => {
   const [mode, setMode] = useState<string>('');
   const [name, setName] = useState<string>('');
 
-  //https://vi-eco.jseung.me/api/car/information/search?carType=[전기차or수소차]&carName=[자동차이름]
   const getDate = async () => {
     const { data } = await axios.get(
       `https://vi-eco.jseung.me/api/car/information/search?carType=${mode}&carName=${search}`,
@@ -43,16 +39,12 @@ const CarInfo: React.FC<Props> = ({ pageMode }) => {
   };
 
   useEffect(() => {
-    getDate();
-  }, [name]);
-
-  useEffect(() => {
-    getDate();
-  }, [search]);
-
-  useEffect(() => {
     changeMode();
   }, [pageMode]);
+
+  useEffect(() => {
+    getDate();
+  }, [mode, name, search]);
 
   return (
     <Layout className="layout">
@@ -67,9 +59,22 @@ const CarInfo: React.FC<Props> = ({ pageMode }) => {
           size="large"
           onSearch={onSearch}
         />
-        <Row gutter={[24, 24]}>
-          {carList.map((el: any) => (
-            <Col key={el.id} className="gutter-row" xs={24} md={12} lg={6}>
+
+        <List
+          style={{ paddingBottom: '50px' }}
+          itemLayout="vertical"
+          // size="large"
+          //페이지 이동 바 부분
+          pagination={{
+            onChange: (page) => {
+              // console.log(page);
+            },
+            pageSize: 16, //한 페이지에 몇 개를 보여줄 것인지
+          }}
+          grid={{ gutter: 24, sm: 1, md: 2, lg: 3, xl: 4 }}
+          dataSource={carList}
+          renderItem={(el: any) => (
+            <List.Item>
               <Card
                 hoverable
                 style={{ paddingTop: 20, width: 300, height: 200 }}
@@ -81,11 +86,11 @@ const CarInfo: React.FC<Props> = ({ pageMode }) => {
               >
                 <Meta title={el.carName} description={el.fuelEfficiency} />
               </Card>
-            </Col>
-          ))}
-        </Row>
+            </List.Item>
+          )}
+        />
       </Content>
-      <Footer>{/* <Pagination total={50} style={{ marginBottom: 40 }} /> */}</Footer>
+      <Footer></Footer>
     </Layout>
   );
 };

@@ -1,25 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Layout, Menu, Space, Input, List, Divider } from 'antd';
-import { Link } from 'react-router-dom';
+import { Layout, Space, Input, List, Divider } from 'antd';
 import { MessageOutlined, LikeOutlined, StarOutlined } from '@ant-design/icons';
 import axios from 'axios';
 import Nav from './Nav';
-import { get } from 'node:http';
-const { Search } = Input;
 
-const { Header, Content, Footer } = Layout;
-const listData: any[] | undefined = [];
-for (let i = 0; i < 23; i++) {
-  listData.push({
-    href: 'https://zdnet.co.kr/view/?no=20210407153711',
-    title: `[조재환의 카테크] "보조금 못 받으면 어쩌지?" 불안한 전기차 예비 오너`,
-    publisher: 'ZDNet Korea',
-    author: '조재환',
-    section: 'culture',
-    date: '2021-04-07',
-    description: 'ZDNet Korea 조재환',
-  });
-}
+const { Search } = Input;
+const { Content } = Layout;
 
 interface IProps {
   icon: any;
@@ -63,20 +49,16 @@ const NewInfo: React.FC<Props> = ({ pageMode }) => {
   };
 
   useEffect(() => {
-    getDate();
-  }, [search]);
-
-  useEffect(() => {
     changeMode();
   }, [pageMode]);
+
   useEffect(() => {
     getDate();
-  }, [name]);
+  }, [mode, name, search]);
 
   return (
     <Layout className="layout">
       <Nav></Nav>
-
       <Content style={{ padding: '0 50px', textAlign: 'left' }}>
         <Divider orientation="left">{name}</Divider>
 
@@ -90,19 +72,18 @@ const NewInfo: React.FC<Props> = ({ pageMode }) => {
         />
         <div className="news-layout-content" style={{ minHeight: '1080px', padding: '24px', background: '#fff' }}>
           <List
+            style={{ paddingBottom: '50px' }}
             itemLayout="vertical"
             // size="large"
             //페이지 이동 바 부분
             pagination={{
-              onChange: (page) => {
-                // console.log(page);
-              },
               pageSize: 6, //한 페이지에 몇 개를 보여줄 것인지
+              showSizeChanger: false,
             }}
             dataSource={newList}
             renderItem={(item: any) => (
               <List.Item
-                key={item.id}
+                key={item.title}
                 actions={[
                   <IconText icon={StarOutlined} text="0" key="list-vertical-star-o" />,
                   <IconText icon={LikeOutlined} text="0" key="list-vertical-like-o" />,
