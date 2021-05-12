@@ -178,8 +178,10 @@ const Map: React.FC<Props> = ({ pageMode }) => {
 
   const loadEvs = async () => {
     const res = await api({ url: '/car/electric/station', params: { numOfRows: 1000, pageNo: 1 } });
-    const next: typeof evs = res?.data?.response?.body?.items?.item;
-    setEvs(next);
+    const next: typeof evs | null = res?.data?.response?.body?.items?.item;
+    if (next) {
+      setEvs(next);
+    }
   };
 
   useEffect(() => {
