@@ -30,6 +30,7 @@ const NewInfo: React.FC<Props> = ({ pageMode }) => {
   const [name, setName] = useState<string>('');
 
   const getDate = async () => {
+    //서버에서 받아오는 데이터
     const { data } = await axios.get(`https://vi-eco.jseung.me/api/news/${mode}/search?title=${search}`);
     setNewList(data);
   };
@@ -56,12 +57,16 @@ const NewInfo: React.FC<Props> = ({ pageMode }) => {
     getDate();
   }, [mode, name, search]);
 
+  // const highlight = (e) => {
+  //   console.log(e);
+  // };
   return (
     <Layout className="layout">
       <Nav></Nav>
       <Content style={{ padding: '0 50px', textAlign: 'left' }}>
         <Divider orientation="left">{name}</Divider>
 
+        {/* 검색창 */}
         <Search
           style={{ paddingBottom: '20px' }}
           placeholder="input search text"
@@ -81,6 +86,7 @@ const NewInfo: React.FC<Props> = ({ pageMode }) => {
               showSizeChanger: false,
             }}
             dataSource={newList}
+            //서버에서 받아온 데이터를 하나씩 차례로 화면에 랜더딩
             renderItem={(item: any) => (
               <List.Item
                 key={item.title}
@@ -93,7 +99,8 @@ const NewInfo: React.FC<Props> = ({ pageMode }) => {
                 <List.Item.Meta
                   title={
                     <a href={item.url} target="_blank">
-                      {item.title}
+                      {/* item.title부분이 뉴스 제목 나오는 부분 이부분에 해당 키워드 포함시 하이라이트 */}
+                      <div className="highlight">{item.title}</div>
                     </a>
                   }
                   description={item.publisher}
