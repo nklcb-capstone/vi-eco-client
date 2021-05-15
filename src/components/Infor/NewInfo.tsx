@@ -3,6 +3,8 @@ import { Layout, Space, Input, List, Divider } from 'antd';
 import { MessageOutlined, LikeOutlined, StarOutlined } from '@ant-design/icons';
 import axios from 'axios';
 import Nav from './Nav';
+// import { title } from 'node:process';
+import { idText } from 'typescript';
 
 const { Search } = Input;
 const { Content } = Layout;
@@ -28,10 +30,27 @@ const NewInfo: React.FC<Props> = ({ pageMode }) => {
   const [search, setSearch] = useState<string>('');
   const [mode, setMode] = useState<string>('');
   const [name, setName] = useState<string>('');
-
   const getDate = async () => {
     //서버에서 받아오는 데이터
     const { data } = await axios.get(`https://vi-eco.jseung.me/api/news/${mode}/search?title=${search}`);
+
+    setTimeout(() => {
+      data.forEach((el: any) => {
+        if (el.title.includes(search) && search !== '') {
+          let a: any = document.getElementById(el.id);
+          console.log(search);
+          let result = el.title.replace(`/${search}/gi, <b>${search}</b>`);
+          console.log(result);
+          // let b = el.title.split(search);
+          // console.log(b);
+          a.innerHTML = result;
+          //a.appendChild(document.createElement('br'));
+          //a.setAttribute('style', 'color:red');
+          // a.style.color = 'red';
+        }
+      });
+    }, 100);
+
     setNewList(data);
   };
 
@@ -89,7 +108,7 @@ const NewInfo: React.FC<Props> = ({ pageMode }) => {
             //서버에서 받아온 데이터를 하나씩 차례로 화면에 랜더딩
             renderItem={(item: any) => (
               <List.Item
-                key={item.title}
+                key={item.id}
                 actions={[
                   <IconText icon={StarOutlined} text="0" key="list-vertical-star-o" />,
                   <IconText icon={LikeOutlined} text="0" key="list-vertical-like-o" />,
@@ -100,7 +119,7 @@ const NewInfo: React.FC<Props> = ({ pageMode }) => {
                   title={
                     <a href={item.url} target="_blank">
                       {/* item.title부분이 뉴스 제목 나오는 부분 이부분에 해당 키워드 포함시 하이라이트 */}
-                      <div className="highlight">{item.title}</div>
+                      <div id={item.id}>{item.title}</div>
                     </a>
                   }
                   description={item.publisher}
