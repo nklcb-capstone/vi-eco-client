@@ -34,22 +34,27 @@ const NewInfo: React.FC<Props> = ({ pageMode }) => {
     //서버에서 받아오는 데이터
     const { data } = await axios.get(`https://vi-eco.jseung.me/api/news/${mode}/search?title=${search}`);
 
-    setTimeout(() => {
-      data.forEach((el: any) => {
-        if (el.title.includes(search) && search !== '') {
-          let a: any = document.getElementById(el.id);
-          console.log(search);
-          let result = el.title.replace(`/${search}/gi, <b>${search}</b>`);
-          console.log(result);
-          // let b = el.title.split(search);
-          // console.log(b);
-          a.innerHTML = result;
-          //a.appendChild(document.createElement('br'));
-          //a.setAttribute('style', 'color:red');
-          // a.style.color = 'red';
+    const sim = "'";
+    //검색 하이라이트 기능
+    for (const el of data) {
+      if (el.title.includes(search) && search !== '') {
+        let splited = el.title.split(search);
+        let t = (
+          <strong>
+            {sim}
+            {search}
+            {sim}
+          </strong>
+        );
+        let arr = [];
+        for (const el of splited) {
+          arr.push(el);
+          arr.push(t);
         }
-      });
-    }, 100);
+        arr.pop();
+        el.title = arr;
+      }
+    }
 
     setNewList(data);
   };
@@ -76,9 +81,10 @@ const NewInfo: React.FC<Props> = ({ pageMode }) => {
     getDate();
   }, [mode, name, search]);
 
-  // const highlight = (e) => {
-  //   console.log(e);
+  // const onChange = (id: number, title: string) => void {
+  //   let el:any = document.querySelector(`#${id}`);
   // };
+
   return (
     <Layout className="layout">
       <Nav></Nav>
