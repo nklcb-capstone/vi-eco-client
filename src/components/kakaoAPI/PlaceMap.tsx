@@ -33,7 +33,7 @@ interface MarkerOriginalEvent<T> {
 const mapOptions = {
   //지도 기본 위치값 서울역 좌표로 지정
   center: new window.kakao.maps.LatLng(37.555178, 126.970756),
-  level: 5,
+  level: 3,
 };
 
 //
@@ -252,6 +252,10 @@ function PlaceMap(): React.ReactElement {
       s.append(place.address_name);
       placeInfo.append(s);
     }
+    const dc = document.createElement('span');
+    dc.className = 'dc';
+    dc.append(`${'전기차'} 충전소 이용 시 할인 10%`);
+    placeInfo.append(dc);
     const tel = document.createElement('span');
     tel.className = 'tel';
     tel.append(place.phone);
