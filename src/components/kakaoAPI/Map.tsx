@@ -484,6 +484,50 @@ const Map: React.FC<Props> = ({ pageMode }) => {
   };
 
   //
+  // Search
+  //
+  const searchPlaces = () => {
+    const value = (document.getElementById('keyword') as HTMLInputElement).value;
+    console.log({ value });
+    if (!value || !ps) {
+      return;
+    }
+
+    ps.keywordSearch(value, placesSearchCB, { page: 1, category_group_code: 'CE7' });
+  };
+
+  // 장소검색이 완료됐을 때 호출되는 콜백함수 입니다
+  const placesSearchCB = (data: any, status: any, pagination: any) => {
+    if (status === kakao.maps.services.Status.OK) {
+      // 정상적으로 검색이 완료됐으면
+      // 검색 목록과 마커를 표출합니다
+      displayPlaces(data);
+    }
+  };
+
+  const displayPlaces = (places: any[]) => {
+    const averageY = places.reduce((hold, place) => hold + Number(place.y), 0) / places.length
+    const averageX = places.reduce((hold, place) => hold + Number(place.x), 0) / places.length
+
+    const pos = new kakao.maps.LatLng(averageY, averageX)
+
+    // const bounds = new kakao.maps.LatLngBounds();
+
+    // for (let i = 0; i < places.length; i++) {
+    //   const placePosition = new kakao.maps.LatLng(places[i].y, places[i].x);
+
+    //   // 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해
+    //   // LatLngBounds 객체에 좌표를 추가합니다
+    //   bounds.extend(placePosition);
+    // }
+
+    // // 검색된 장소 위치를 기준으로 지도 범위를 재설정합니다
+    // map.setBounds(bounds);
+
+    map.setCenter(pos)
+  };
+
+  //
   // Render
   //
 
@@ -499,6 +543,16 @@ const Map: React.FC<Props> = ({ pageMode }) => {
   return (
     <div className={cssRules.Map}>
       <div id="map" ref={mapContainerRef} style={{ width: '100vw', height: 'calc(var(--vh, 1vh)*100 - 53px)' }} />
+      <div id="menu_wrap" className="bg_white">
+        <div className="option">
+          <div>
+            <form onSubmit={searchPlaces}>
+              키워드 : <input type="text" id="keyword" size={15} />
+              <button type="submit">검색하기</button>
+            </form>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
