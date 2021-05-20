@@ -1,3 +1,4 @@
+// https://apis.map.kakao.com/web/sample/keywordList/
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
@@ -9,6 +10,9 @@ import cssRules from './Map.module.scss';
 import api from 'common/api/api';
 import { EV, KakaoCategory, kakaoCategoryTable, MapMarkerInfo } from 'common/types';
 import { evChgerTypeConvert, evStatConvert, getLocation } from 'common/helpers';
+import imageSrcCe7 from 'images/ico-ce7.png'
+import imageSrcCs2 from 'images/ico-cs2.png'
+import imageSrcFd6 from 'images/ico-fd6.png'
 
 //
 // Kakao
@@ -29,7 +33,7 @@ interface MarkerOriginalEvent<T> {
 const mapOptions = {
   //지도 기본 위치값 서울역 좌표로 지정
   center: new window.kakao.maps.LatLng(37.555178, 126.970756),
-  level: 5,
+  level: 3,
 };
 
 //
@@ -76,47 +80,47 @@ function PlaceMap(): React.ReactElement {
     });
   };
 
-  //
-  // Category
-  //
-  const [currCategory, setCurrCategory] = useState<KakaoCategory>('CS2');
+  // //
+  // // Category
+  // //
+  // const [currCategory, setCurrCategory] = useState<KakaoCategory>('CS2');
 
-  const onClickCategory: React.MouseEventHandler<HTMLLIElement> = (e) => {
-    const id = e.currentTarget.id as KakaoCategory;
-    placeOverlay.setMap(null);
-    ___currCategory___ = id;
-    setCurrCategory(id);
-    searchPlaces(id);
-  };
+  // const onClickCategory: React.MouseEventHandler<HTMLLIElement> = (e) => {
+  //   const id = e.currentTarget.id as KakaoCategory;
+  //   placeOverlay.setMap(null);
+  //   ___currCategory___ = id;
+  //   setCurrCategory(id);
+  //   searchPlaces(id);
+  // };
 
   //
   // Places
   //
   const [ps, setPs] = useState<any>();
 
-  useEffect(() => {
-    if (map && ps) {
-      // Since searchPlaces works where ps is defined
-      kakao.maps.event.addListener(map, 'idle', searchPlaces);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [map, ps]);
+  // useEffect(() => {
+  //   if (map && ps) {
+  //     // Since searchPlaces works where ps is defined
+  //     kakao.maps.event.addListener(map, 'idle', searchPlaces);
+  //   }
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [map, ps]);
 
-  const searchPlaces = (category: typeof currCategory = ___currCategory___) => {
-    if (ps) {
-      // if ps defined
-      // Remove custom overlays on map
-      ___PLACE_OVERLAY_CLOSINGS___.forEach((closeOverlay) => {
-        closeOverlay();
-      });
-      ___PLACE_OVERLAY_CLOSINGS___ = [];
+  // const searchPlaces = (category: typeof currCategory = ___currCategory___) => {
+  //   if (ps) {
+  //     // if ps defined
+  //     // Remove custom overlays on map
+  //     ___PLACE_OVERLAY_CLOSINGS___.forEach((closeOverlay) => {
+  //       closeOverlay();
+  //     });
+  //     ___PLACE_OVERLAY_CLOSINGS___ = [];
 
-      // Remove markers on map
-      removeMarker();
+  //     // Remove markers on map
+  //     removeMarker();
 
-      ps.categorySearch(category, onAfterPlacesSearch, { useMapBounds: true });
-    }
-  };
+  //     ps.categorySearch(category, onAfterPlacesSearch, { useMapBounds: true });
+  //   }
+  // };
 
   const onAfterPlacesSearch = (data: any, status: any, pagination: any) => {
     if (status === kakao.maps.services.Status.OK) {
@@ -143,11 +147,17 @@ function PlaceMap(): React.ReactElement {
   };
 
   const displayPlaces = (places: any[]) => {
+    //
+    //
+
     // Markers
     const markers: any[] = places.map((place) => {
       const position = new kakao.maps.LatLng(place.y, place.x);
-      const imageSize = new kakao.maps.Size(24, 35);
-      const markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
+      const imageSize = new kakao.maps.Size(30, 30);
+      console.log({place})
+      const _cat = place.category_group_code
+      const imageSrcByCategory = _cat === 'CS2' ? imageSrcCs2 : _cat === 'CE7' ? imageSrcCe7 : imageSrcFd6
+      const markerImage = new kakao.maps.MarkerImage(imageSrcByCategory, imageSize);
 
       // Marker
       const marker = new kakao.maps.Marker({ position, image: markerImage });
@@ -164,7 +174,52 @@ function PlaceMap(): React.ReactElement {
     });
 
     // setState
-    setMarkers(markers);
+    setMarkers((pre) => [...pre, ...markers]);
+
+    //
+    //
+
+    const bounds = new kakao.maps.LatLngBounds();
+
+    // // 검색 결과 목록에 추가된 항목들을 제거합니다
+    // removeAllChildNods(listEl);
+
+    // // 지도에 표시되고 있는 마커를 제거합니다
+    // removeMarker();
+
+    for (let i = 0; i < places.length; i++) {
+      // 마커를 생성하고 지도에 표시합니다
+      const placePosition = new kakao.maps.LatLng(places[i].y, places[i].x);
+      // const  marker = addMarker(placePosition, i);
+
+      // 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해
+      // LatLngBounds 객체에 좌표를 추가합니다
+      bounds.extend(placePosition);
+
+      // // 마커와 검색결과 항목에 mouseover 했을때
+      // // 해당 장소에 인포윈도우에 장소명을 표시합니다
+      // // mouseout 했을 때는 인포윈도우를 닫습니다
+      // (function (marker, title) {
+      //   kakao.maps.event.addListener(marker, 'mouseover', function () {
+      //     displayInfowindow(marker, title);
+      //   });
+
+      //   kakao.maps.event.addListener(marker, 'mouseout', function () {
+      //     infowindow.close();
+      //   });
+
+      //   itemEl.onmouseover = function () {
+      //     displayInfowindow(marker, title);
+      //   };
+
+      //   itemEl.onmouseout = function () {
+      //     infowindow.close();
+      //   };
+      // })(marker, places[i].place_name);
+    }
+
+    // 검색된 장소 위치를 기준으로 지도 범위를 재설정합니다
+    map.setBounds(bounds);
   };
 
   //
@@ -176,7 +231,7 @@ function PlaceMap(): React.ReactElement {
     placeInfo.className = 'placeinfo';
 
     const title = document.createElement('a');
-    title.className = 'title'
+    title.className = 'title';
     title.href = place.place_url;
     title.target = '_blank';
     title.title = place.palce_name;
@@ -197,6 +252,10 @@ function PlaceMap(): React.ReactElement {
       s.append(place.address_name);
       placeInfo.append(s);
     }
+    const dc = document.createElement('span');
+    dc.className = 'dc';
+    dc.append(`${'전기차'} 충전소 이용 시 할인 10%`);
+    placeInfo.append(dc);
     const tel = document.createElement('span');
     tel.className = 'tel';
     tel.append(place.phone);
@@ -204,12 +263,59 @@ function PlaceMap(): React.ReactElement {
 
     const after = document.createElement('div');
     after.className = 'after';
-    console.log('placeInfo.outerHTML', placeInfo.outerHTML)
 
     const content = placeInfo.outerHTML + after.outerHTML;
     placeOverlayContentNode.innerHTML = content;
     placeOverlay.setPosition(new kakao.maps.LatLng(place.y, place.x));
     placeOverlay.setMap(map);
+  };
+
+  //
+  // Search
+  //
+  const searchPlaces = () => {
+    const value = (document.getElementById('keyword') as HTMLInputElement).value;
+    console.log({ value });
+    if (!value || !ps) {
+      return;
+    }
+    // Remove custom overlays on map
+    ___PLACE_OVERLAY_CLOSINGS___.forEach((closeOverlay) => {
+      closeOverlay();
+    });
+    ___PLACE_OVERLAY_CLOSINGS___ = [];
+
+    // Remove markers on map
+    removeMarker();
+
+    ps.keywordSearch(value, placesSearchCB, { page: 1, category_group_code: 'CS2'  });
+    ps.keywordSearch(value, placesSearchCB, { page: 2, category_group_code: 'CS2'  });
+    ps.keywordSearch(value, placesSearchCB, { page: 1, category_group_code: 'CE7'  });
+    ps.keywordSearch(value, placesSearchCB, { page: 2, category_group_code: 'CE7'  });
+    ps.keywordSearch(value, placesSearchCB, { page: 1, category_group_code: 'FD6'  });
+    ps.keywordSearch(value, placesSearchCB, { page: 2, category_group_code: 'FD6'  });
+  };
+
+  // 장소검색이 완료됐을 때 호출되는 콜백함수 입니다
+  const placesSearchCB = (data: any, status: any, pagination: any) => {
+    if (status === kakao.maps.services.Status.OK) {
+      const categorySet = new Set<string>(['CS2', 'CE7', 'FD6']);
+      const filteredData = data.filter((datum: any) => categorySet.has(datum.category_group_code));
+
+      // 정상적으로 검색이 완료됐으면
+      // 검색 목록과 마커를 표출합니다
+      displayPlaces(data);
+      console.log({ filteredData });
+      console.log({ data });
+    }
+    //
+    // } else if (status === kakao.maps.services.Status.ZERO_RESULT) {
+    //   alert('검색 결과가 존재하지 않습니다.');
+    //   return;
+    // } else if (status === kakao.maps.services.Status.ERROR) {
+    //   alert('검색 결과 중 오류가 발생했습니다.');
+    //
+    // return;
   };
 
   //
@@ -240,23 +346,34 @@ function PlaceMap(): React.ReactElement {
   return (
     <div className={cssRules.Map}>
       <div id="map" ref={mapContainerRef} style={{ width: '100vw', height: 'calc(var(--vh, 1vh)*100 - 53px)' }} />
-      <ul id="category">
-        <li id="CS2" data-order="1" onClick={onClickCategory}>
+
+      {/* <ul id="category">
+        <li id="CS2" data-order="1" onClick={onClickCategory} data-name="편의점">
           <span className="category_bg store"></span>
-          {/* 편의점 */}
           {kakaoCategoryTable.CS2}
         </li>
-        <li id="CE7" data-order="2" onClick={onClickCategory}>
+        <li id="CE7" data-order="2" onClick={onClickCategory} data-name="카페">
           <span className="category_bg cafe"></span>
-          {/* 카페 */}
           {kakaoCategoryTable.CE7}
         </li>
-        <li id="FD6" data-order="3" onClick={onClickCategory}>
+        <li id="FD6" data-order="3" onClick={onClickCategory} data-name="음식점">
           <span className="category_bg cafe"></span>
-          {/* 음식점 */}
           {kakaoCategoryTable.FD6}
         </li>
-      </ul>
+      </ul> */}
+      <div id="menu_wrap" className="bg_white">
+        <div className="option">
+          <div>
+            <form onSubmit={searchPlaces}>
+              키워드 : <input type="text" id="keyword" size={15} />
+              <button type="submit">검색하기</button>
+            </form>
+          </div>
+        </div>
+        {/* <hr />
+        <ul id="placesList"></ul>
+        <div id="pagination"></div> */}
+      </div>
     </div>
   );
 }
