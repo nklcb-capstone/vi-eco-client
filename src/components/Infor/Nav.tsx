@@ -1,6 +1,7 @@
 import React from 'react';
 import { Layout, Menu } from 'antd';
 import { Link } from 'react-router-dom';
+import { Footer } from 'antd/lib/layout/layout';
 const { Header } = Layout;
 
 const Nav = () => {
