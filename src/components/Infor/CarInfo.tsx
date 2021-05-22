@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Layout, Input, List, Divider, Card } from 'antd';
 import Nav from './Nav';
+import FooterLayout from './FooterLayout';
 const { Content, Footer } = Layout;
 const { Meta } = Card;
 const { Search } = Input;
@@ -60,7 +61,6 @@ const CarInfo: React.FC<Props> = ({ pageMode }) => {
         />
 
         <List
-          style={{ paddingBottom: '50px' }}
           itemLayout="vertical"
           // size="large"
           //페이지 이동 바 부분
@@ -89,7 +89,7 @@ const CarInfo: React.FC<Props> = ({ pageMode }) => {
           )}
         />
       </Content>
-      <Footer></Footer>
+      <FooterLayout></FooterLayout>
     </Layout>
   );
 };

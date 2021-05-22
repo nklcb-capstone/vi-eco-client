@@ -3,8 +3,7 @@ import { Layout, Space, Input, List, Divider } from 'antd';
 import { MessageOutlined, LikeOutlined, StarOutlined } from '@ant-design/icons';
 import axios from 'axios';
 import Nav from './Nav';
-// import { title } from 'node:process';
-import { idText } from 'typescript';
+import FooterLayout from './FooterLayout';
 
 const { Search } = Input;
 const { Content } = Layout;
@@ -136,6 +135,7 @@ const NewInfo: React.FC<Props> = ({ pageMode }) => {
           />
         </div>
       </Content>
+      <FooterLayout></FooterLayout>
     </Layout>
   );
 };
