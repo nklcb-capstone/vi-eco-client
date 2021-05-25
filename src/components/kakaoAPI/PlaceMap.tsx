@@ -42,6 +42,12 @@ const mapOptions = {
 //
 let ___PLACE_OVERLAY_CLOSINGS___: any[] = [];
 
+let ___INITIAL_OVERLAY_CLOSINGS___: any[] = [];
+
+//
+// Overlay
+//
+
 const placeOverlay = new kakao.maps.CustomOverlay({ zIndex: 1 });
 const placeOverlayContentNode = document.createElement('div');
 placeOverlayContentNode.className = 'placeinfo_wrap';
@@ -147,7 +153,7 @@ function PlaceMap(): React.ReactElement {
     setMarkers([]);
   };
 
-  const displayPlaces = (places: any[]) => {
+  const displayPlaces = (places: any[], setBounds = true) => {
     //
     //
 
@@ -180,47 +186,49 @@ function PlaceMap(): React.ReactElement {
     //
     //
 
-    const bounds = new kakao.maps.LatLngBounds();
+    if (setBounds) {
+      const bounds = new kakao.maps.LatLngBounds();
 
-    // // 검색 결과 목록에 추가된 항목들을 제거합니다
-    // removeAllChildNods(listEl);
+      // // 검색 결과 목록에 추가된 항목들을 제거합니다
+      // removeAllChildNods(listEl);
 
-    // // 지도에 표시되고 있는 마커를 제거합니다
-    // removeMarker();
+      // // 지도에 표시되고 있는 마커를 제거합니다
+      // removeMarker();
 
-    for (let i = 0; i < places.length; i++) {
-      // 마커를 생성하고 지도에 표시합니다
-      const placePosition = new kakao.maps.LatLng(places[i].y, places[i].x);
-      // const  marker = addMarker(placePosition, i);
+      for (let i = 0; i < places.length; i++) {
+        // 마커를 생성하고 지도에 표시합니다
+        const placePosition = new kakao.maps.LatLng(places[i].y, places[i].x);
+        // const  marker = addMarker(placePosition, i);
 
-      // 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해
-      // LatLngBounds 객체에 좌표를 추가합니다
-      bounds.extend(placePosition);
+        // 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해
+        // LatLngBounds 객체에 좌표를 추가합니다
+        bounds.extend(placePosition);
 
-      // // 마커와 검색결과 항목에 mouseover 했을때
-      // // 해당 장소에 인포윈도우에 장소명을 표시합니다
-      // // mouseout 했을 때는 인포윈도우를 닫습니다
-      // (function (marker, title) {
-      //   kakao.maps.event.addListener(marker, 'mouseover', function () {
-      //     displayInfowindow(marker, title);
-      //   });
+        // // 마커와 검색결과 항목에 mouseover 했을때
+        // // 해당 장소에 인포윈도우에 장소명을 표시합니다
+        // // mouseout 했을 때는 인포윈도우를 닫습니다
+        // (function (marker, title) {
+        //   kakao.maps.event.addListener(marker, 'mouseover', function () {
+        //     displayInfowindow(marker, title);
+        //   });
 
-      //   kakao.maps.event.addListener(marker, 'mouseout', function () {
-      //     infowindow.close();
-      //   });
+        //   kakao.maps.event.addListener(marker, 'mouseout', function () {
+        //     infowindow.close();
+        //   });
 
-      //   itemEl.onmouseover = function () {
-      //     displayInfowindow(marker, title);
-      //   };
+        //   itemEl.onmouseover = function () {
+        //     displayInfowindow(marker, title);
+        //   };
 
-      //   itemEl.onmouseout = function () {
-      //     infowindow.close();
-      //   };
-      // })(marker, places[i].place_name);
+        //   itemEl.onmouseout = function () {
+        //     infowindow.close();
+        //   };
+        // })(marker, places[i].place_name);
+      }
+
+      // 검색된 장소 위치를 기준으로 지도 범위를 재설정합니다
+      map.setBounds(bounds);
     }
-
-    // 검색된 장소 위치를 기준으로 지도 범위를 재설정합니다
-    map.setBounds(bounds);
   };
 
   //
@@ -285,6 +293,10 @@ function PlaceMap(): React.ReactElement {
       closeOverlay();
     });
     ___PLACE_OVERLAY_CLOSINGS___ = [];
+    ___INITIAL_OVERLAY_CLOSINGS___.forEach((closeOverlay) => {
+      closeOverlay();
+    });
+    ___INITIAL_OVERLAY_CLOSINGS___ = [];
 
     // Remove markers on map
     removeMarker();
@@ -320,6 +332,42 @@ function PlaceMap(): React.ReactElement {
   };
 
   //
+  // Initial search
+  //
+  const initialSearch = (): void => {
+    if (!ps) return;
+
+    ___INITIAL_OVERLAY_CLOSINGS___.forEach((closeOverlay) => {
+      closeOverlay();
+    });
+    ___INITIAL_OVERLAY_CLOSINGS___ = [];
+
+    removeMarker();
+
+    ps.categorySearch('CS2', onAfterInitialSearch, { useMapBounds: true });
+    ps.categorySearch('CE7', onAfterInitialSearch, { useMapBounds: true });
+    ps.categorySearch('FD6', onAfterInitialSearch, { useMapBounds: true });
+  };
+
+  const onAfterInitialSearch = (data: any, status: any, pagination: any) => {
+    if (status === kakao.maps.services.Status.OK) {
+      // 정상적으로 검색이 완료됐으면 지도에 마커를 표출합니다
+      displayPlaces(data, false);
+    } else if (status === kakao.maps.services.Status.ZERO_RESULT) {
+      // No search result
+    } else if (status === kakao.maps.services.Status.ERROR) {
+      // No search result due to error
+    }
+  };
+
+  useEffect(() => {
+    if (map && ps) {
+      initialSearch();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [map, ps]);
+
+  //
   // Location
   //
   useEffect(() => {
@@ -327,6 +375,7 @@ function PlaceMap(): React.ReactElement {
       getLocation((position) => {
         const l = new window.kakao.maps.LatLng(position.coords.latitude, position.coords.longitude);
         map.setCenter(l);
+        initialSearch();
       });
     }
   }, [map]);
