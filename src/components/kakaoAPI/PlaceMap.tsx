@@ -10,9 +10,10 @@ import cssRules from './Map.module.scss';
 import api from 'common/api/api';
 import { EV, KakaoCategory, kakaoCategoryTable, MapMarkerInfo } from 'common/types';
 import { evChgerTypeConvert, evStatConvert, getLocation } from 'common/helpers';
-import imageSrcCe7 from 'images/ico-ce7.png'
-import imageSrcCs2 from 'images/ico-cs2.png'
-import imageSrcFd6 from 'images/ico-fd6.png'
+import imageSrcCe7 from 'images/ico-ce7.png';
+import imageSrcCs2 from 'images/ico-cs2.png';
+import imageSrcFd6 from 'images/ico-fd6.png';
+import Search from 'antd/lib/input/Search';
 
 //
 // Kakao
@@ -154,9 +155,9 @@ function PlaceMap(): React.ReactElement {
     const markers: any[] = places.map((place) => {
       const position = new kakao.maps.LatLng(place.y, place.x);
       const imageSize = new kakao.maps.Size(30, 30);
-      console.log({place})
-      const _cat = place.category_group_code
-      const imageSrcByCategory = _cat === 'CS2' ? imageSrcCs2 : _cat === 'CE7' ? imageSrcCe7 : imageSrcFd6
+      console.log({ place });
+      const _cat = place.category_group_code;
+      const imageSrcByCategory = _cat === 'CS2' ? imageSrcCs2 : _cat === 'CE7' ? imageSrcCe7 : imageSrcFd6;
       const markerImage = new kakao.maps.MarkerImage(imageSrcByCategory, imageSize);
 
       // Marker
@@ -288,12 +289,12 @@ function PlaceMap(): React.ReactElement {
     // Remove markers on map
     removeMarker();
 
-    ps.keywordSearch(value, placesSearchCB, { page: 1, category_group_code: 'CS2'  });
-    ps.keywordSearch(value, placesSearchCB, { page: 2, category_group_code: 'CS2'  });
-    ps.keywordSearch(value, placesSearchCB, { page: 1, category_group_code: 'CE7'  });
-    ps.keywordSearch(value, placesSearchCB, { page: 2, category_group_code: 'CE7'  });
-    ps.keywordSearch(value, placesSearchCB, { page: 1, category_group_code: 'FD6'  });
-    ps.keywordSearch(value, placesSearchCB, { page: 2, category_group_code: 'FD6'  });
+    ps.keywordSearch(value, placesSearchCB, { page: 1, category_group_code: 'CS2' });
+    ps.keywordSearch(value, placesSearchCB, { page: 2, category_group_code: 'CS2' });
+    ps.keywordSearch(value, placesSearchCB, { page: 1, category_group_code: 'CE7' });
+    ps.keywordSearch(value, placesSearchCB, { page: 2, category_group_code: 'CE7' });
+    ps.keywordSearch(value, placesSearchCB, { page: 1, category_group_code: 'FD6' });
+    ps.keywordSearch(value, placesSearchCB, { page: 2, category_group_code: 'FD6' });
   };
 
   // 장소검색이 완료됐을 때 호출되는 콜백함수 입니다
@@ -362,17 +363,14 @@ function PlaceMap(): React.ReactElement {
         </li>
       </ul> */}
       <div id="menu_wrap" className="bg_white">
-        <div className="option">
-          <div>
-            <form onSubmit={searchPlaces}>
-              키워드 : <input type="text" id="keyword" size={15} />
-              <button type="submit">검색하기</button>
-            </form>
-          </div>
-        </div>
-        {/* <hr />
-        <ul id="placesList"></ul>
-        <div id="pagination"></div> */}
+        <Search
+          style={{}}
+          allowClear
+          enterButton="검색하기"
+          placeholder="키워드"
+          onSearch={searchPlaces}
+          id="keyword"
+        />
       </div>
     </div>
   );

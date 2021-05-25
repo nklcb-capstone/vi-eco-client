@@ -9,6 +9,7 @@ import cssRules from './Map.module.scss';
 import api from 'common/api/api';
 import { EV, MapMarkerInfo } from 'common/types';
 import { evChgerTypeConvert, evStatConvert } from 'common/helpers';
+import Search from 'antd/lib/input/Search';
 
 //
 // Kakao
@@ -544,14 +545,14 @@ const Map: React.FC<Props> = ({ pageMode }) => {
     <div className={cssRules.Map}>
       <div id="map" ref={mapContainerRef} style={{ width: '100vw', height: 'calc(var(--vh, 1vh)*100 - 53px)' }} />
       <div id="menu_wrap" className="bg_white">
-        <div className="option">
-          <div>
-            <form onSubmit={searchPlaces}>
-              키워드 : <input type="text" id="keyword" size={15} />
-              <button type="submit">검색하기</button>
-            </form>
-          </div>
-        </div>
+        <Search
+          style={{}}
+          allowClear
+          enterButton="검색하기"
+          placeholder="키워드"
+          onSearch={searchPlaces}
+          id="keyword"
+        />
       </div>
     </div>
   );
