@@ -1,25 +1,26 @@
 {
   "files": {
-    "main.css": "/vi-eco-client/static/css/main.ffb68397.chunk.css",
-    "main.js": "/vi-eco-client/static/js/main.ab5278b1.chunk.js",
-    "main.js.map": "/vi-eco-client/static/js/main.ab5278b1.chunk.js.map",
-    "runtime-main.js": "/vi-eco-client/static/js/runtime-main.d8fc1677.js",
-    "runtime-main.js.map": "/vi-eco-client/static/js/runtime-main.d8fc1677.js.map",
-    "static/css/2.cefea94e.chunk.css": "/vi-eco-client/static/css/2.cefea94e.chunk.css",
-    "static/js/2.4b717036.chunk.js": "/vi-eco-client/static/js/2.4b717036.chunk.js",
-    "static/js/2.4b717036.chunk.js.map": "/vi-eco-client/static/js/2.4b717036.chunk.js.map",
-    "static/js/3.98506d4c.chunk.js": "/vi-eco-client/static/js/3.98506d4c.chunk.js",
-    "static/js/3.98506d4c.chunk.js.map": "/vi-eco-client/static/js/3.98506d4c.chunk.js.map",
+    "main.css": "/vi-eco-client/static/css/main.e599c412.chunk.css",
+    "main.js": "/vi-eco-client/static/js/main.da1e7bd4.chunk.js",
+    "main.js.map": "/vi-eco-client/static/js/main.da1e7bd4.chunk.js.map",
+    "runtime-main.js": "/vi-eco-client/static/js/runtime-main.5e8c5985.js",
+    "runtime-main.js.map": "/vi-eco-client/static/js/runtime-main.5e8c5985.js.map",
+    "static/css/2.2b4e7770.chunk.css": "/vi-eco-client/static/css/2.2b4e7770.chunk.css",
+    "static/js/2.4daaf051.chunk.js": "/vi-eco-client/static/js/2.4daaf051.chunk.js",
+    "static/js/2.4daaf051.chunk.js.map": "/vi-eco-client/static/js/2.4daaf051.chunk.js.map",
+    "static/js/3.97acf2dd.chunk.js": "/vi-eco-client/static/js/3.97acf2dd.chunk.js",
+    "static/js/3.97acf2dd.chunk.js.map": "/vi-eco-client/static/js/3.97acf2dd.chunk.js.map",
     "index.html": "/vi-eco-client/index.html",
-    "static/css/2.cefea94e.chunk.css.map": "/vi-eco-client/static/css/2.cefea94e.chunk.css.map",
-    "static/css/main.ffb68397.chunk.css.map": "/vi-eco-client/static/css/main.ffb68397.chunk.css.map",
-    "static/js/2.4b717036.chunk.js.LICENSE.txt": "/vi-eco-client/static/js/2.4b717036.chunk.js.LICENSE.txt"
+    "static/css/2.2b4e7770.chunk.css.map": "/vi-eco-client/static/css/2.2b4e7770.chunk.css.map",
+    "static/css/main.e599c412.chunk.css.map": "/vi-eco-client/static/css/main.e599c412.chunk.css.map",
+    "static/js/2.4daaf051.chunk.js.LICENSE.txt": "/vi-eco-client/static/js/2.4daaf051.chunk.js.LICENSE.txt",
+    "static/media/location.d4e3518b.png": "/vi-eco-client/static/media/location.d4e3518b.png"
   },
   "entrypoints": [
-    "static/js/runtime-main.d8fc1677.js",
-    "static/css/2.cefea94e.chunk.css",
-    "static/js/2.4b717036.chunk.js",
-    "static/css/main.ffb68397.chunk.css",
-    "static/js/main.ab5278b1.chunk.js"
+    "static/js/runtime-main.5e8c5985.js",
+    "static/css/2.2b4e7770.chunk.css",
+    "static/js/2.4daaf051.chunk.js",
+    "static/css/main.e599c412.chunk.css",
+    "static/js/main.da1e7bd4.chunk.js"
   ]
 }
