@@ -1,16 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { markerdata } from './markerDate';
 import './Map.scss';
-import { Button, Input, Form } from 'antd';
-
 import cssRules from './Map.module.scss';
 import api from 'common/api/api';
 import { EV, MapMarkerInfo } from 'common/types';
 import { evChgerTypeConvert, evStatConvert } from 'common/helpers';
 import Search from 'antd/lib/input/Search';
-
+import Location from '../../images/location.png';
 //
 // Kakao
 //
@@ -47,7 +45,7 @@ interface Props {
 const mapOptions = {
   //지도 기본 위치값 서울역 좌표로 지정
   center: new window.kakao.maps.LatLng(37.555178, 126.970756),
-  level: 5,
+  level: 4,
 };
 
 const Map: React.FC<Props> = ({ pageMode }) => {
@@ -178,7 +176,7 @@ const Map: React.FC<Props> = ({ pageMode }) => {
   const [evs, setEvs] = useState<EV[]>([]);
 
   const loadEvs = async () => {
-    const res = await api({ url: '/car/electric/station', params: { numOfRows: 1000, pageNo: 1 } });
+    const res = await api({ url: '/car/electric/station', params: { numOfRows: 3000, pageNo: 1 } });
     const next: typeof evs | null = res?.data?.response?.body?.items?.item;
     if (next) {
       setEvs(next);
@@ -507,10 +505,10 @@ const Map: React.FC<Props> = ({ pageMode }) => {
   };
 
   const displayPlaces = (places: any[]) => {
-    const averageY = places.reduce((hold, place) => hold + Number(place.y), 0) / places.length
-    const averageX = places.reduce((hold, place) => hold + Number(place.x), 0) / places.length
+    const averageY = places.reduce((hold, place) => hold + Number(place.y), 0) / places.length;
+    const averageX = places.reduce((hold, place) => hold + Number(place.x), 0) / places.length;
 
-    const pos = new kakao.maps.LatLng(averageY, averageX)
+    const pos = new kakao.maps.LatLng(averageY, averageX);
 
     // const bounds = new kakao.maps.LatLngBounds();
 
@@ -525,7 +523,7 @@ const Map: React.FC<Props> = ({ pageMode }) => {
     // // 검색된 장소 위치를 기준으로 지도 범위를 재설정합니다
     // map.setBounds(bounds);
 
-    map.setCenter(pos)
+    map.setCenter(pos);
   };
 
   //
@@ -553,6 +551,10 @@ const Map: React.FC<Props> = ({ pageMode }) => {
           onSearch={searchPlaces}
           id="keyword"
         />
+      </div>
+
+      <div id="location" className="location" onClick={getLocation}>
+        <img style={{ height: '10%', width: '10%' }} src={Location}></img>
       </div>
     </div>
   );

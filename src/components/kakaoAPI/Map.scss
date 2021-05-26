@@ -82,6 +82,14 @@
   white-space: nowrap;
 }
 
+#location {
+  position: absolute;
+  overflow: hidden;
+  left: 20px;
+  bottom: 20px;
+  overflow-y: auto;
+}
+
 @media only screen and (min-device-width: 360px) and (max-device-width: 413px) {
   .wrap {
     position: absolute;

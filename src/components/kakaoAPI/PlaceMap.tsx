@@ -2,10 +2,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { markerdata } from './markerDate';
 import './PlaceMap.scss';
-import { Button, Input, Form } from 'antd';
-
 import cssRules from './Map.module.scss';
 import api from 'common/api/api';
 import { EV, KakaoCategory, kakaoCategoryTable, MapMarkerInfo } from 'common/types';
@@ -14,7 +11,7 @@ import imageSrcCe7 from 'images/ico-ce7.png';
 import imageSrcCs2 from 'images/ico-cs2.png';
 import imageSrcFd6 from 'images/ico-fd6.png';
 import Search from 'antd/lib/input/Search';
-
+import Location from '../../images/location.png';
 //
 // Kakao
 //
@@ -34,7 +31,7 @@ interface MarkerOriginalEvent<T> {
 const mapOptions = {
   //지도 기본 위치값 서울역 좌표로 지정
   center: new window.kakao.maps.LatLng(37.555178, 126.970756),
-  level: 3,
+  level: 4,
 };
 
 //
@@ -370,16 +367,42 @@ function PlaceMap(): React.ReactElement {
   //
   // Location
   //
+  // useEffect(() => {
+  //   if (map) {
+  //     getLocation((position) => {
+  //       const l = new window.kakao.maps.LatLng(position.coords.latitude, position.coords.longitude);
+  //       map.setCenter(l);
+  //       initialSearch();
+  //     });
+  //   }
+  // }, [map]);
+
+  function getLocation() {
+    if (navigator.geolocation) {
+      // GPS를 지원하면
+      navigator.geolocation.getCurrentPosition(
+        function (position) {
+          map.setCenter(new window.kakao.maps.LatLng(position.coords.latitude, position.coords.longitude));
+          initialSearch();
+        },
+        function (error) {
+          console.error(error);
+        },
+        {
+          enableHighAccuracy: true,
+        },
+      );
+    } else {
+      alert('GPS를 지원하지 않습니다');
+    }
+  }
+
   useEffect(() => {
     if (map) {
-      getLocation((position) => {
-        const l = new window.kakao.maps.LatLng(position.coords.latitude, position.coords.longitude);
-        map.setCenter(l);
-        initialSearch();
-      });
+      getLocation();
+      initialSearch();
     }
   }, [map]);
-
   //
   // Render
   //
@@ -420,6 +443,10 @@ function PlaceMap(): React.ReactElement {
           onSearch={searchPlaces}
           id="keyword"
         />
+      </div>
+
+      <div id="location" className="location" onClick={getLocation}>
+        <img style={{ height: '10%', width: '10%' }} src={Location}></img>
       </div>
     </div>
   );
