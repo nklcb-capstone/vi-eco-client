@@ -208,6 +208,23 @@ const Info = () => {
       <Nav></Nav>
       <Layout style={{ backgroundColor: 'white' }}>
         <Content style={{ width: '60%', margin: '10px auto' }}>
+          <Divider orientation="center">!!전기차 충전방법!!</Divider>
+
+          <a href="https://www.youtube.com/watch?v=MK3-qEQUe8w" target="_blank" rel="noreferrer">
+            <Card
+              hoverable
+              style={{ width: '100%', height: '50%' }}
+              cover={<img alt="example" src="https://i.ibb.co/TPT2rZV/image.png" />}
+            >
+              <Meta
+                title="전기차 충전기 이용방법 & 충전 카드 발급 방법 & 하이패스 50% 감면 방법"
+                description="https://www.youtube.com/watch?v=MK3-qEQUe8w"
+              />
+            </Card>
+          </a>
+        </Content>
+
+        <Content style={{ width: '60%', margin: '10px auto' }}>
           <Divider orientation="center">전기차 충전정보</Divider>
 
           <a href="https://www.ev.or.kr/portal/chargerkind" target="_blank" rel="noreferrer">
