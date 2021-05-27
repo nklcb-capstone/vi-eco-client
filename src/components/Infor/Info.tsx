@@ -251,7 +251,7 @@ const Info = () => {
         </Content>
 
         <Content style={{ width: '60%', margin: '10px auto' }}>
-          <Divider orientation="center">내연기관차 유류비와 전기차 충전요금 비교</Divider>
+          <Divider orientation="center">유류비 vs 충전요금</Divider>
           <a href="https://www.ev.or.kr/portal/chargerkind" target="_blank" rel="noreferrer">
             <Card hoverable cover={<img alt="example" src="  https://ifh.cc/g/5sqkuf.png" />}>
               <Meta description="https://www.ev.or.kr/portal/chargerkind" />
