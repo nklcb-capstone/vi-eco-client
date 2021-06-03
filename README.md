@@ -4,6 +4,8 @@ _2021년 경기대 컴퓨터공학부 캡스톤디자인_
 
 viECO는 전기차/수소차의 충전소와 관련 및 연계되는 정보를 제공하는 프로젝트입니다. 이 리포지토리는 React를 사용한 웹 애플리케이션 클라이언트입니다. 간단하며 편리한 사용 경험과 매끄러운 개발 협업에 중점을 두어 설계되었습니다.
 
+https://nklcb-capstone.github.io/vi-eco-client/#/
+
 ## 프로젝트의 전체적인 구조
 
 ![시스템 구조도](https://s3.us-west-2.amazonaws.com/secure.notion-static.com/fb295262-d9e7-4a10-b02c-8d7b64c12a5a/.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAT73L2G45O3KS52Y5%2F20210602%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20210602T135010Z&X-Amz-Expires=86400&X-Amz-Signature=da1f4f62323941e08d398c49fd1d72080f26db1b33d342186090954ee6cbab9f&X-Amz-SignedHeaders=host&response-content-disposition=filename%20%3D%22.png%22)
@@ -56,6 +58,16 @@ ES6, TypeScript, React, Sass, CSS Module, Webpack, ESLint, Prettier, Ant Design,
 ## 배포
 
 GitHub Pages를 사용한 배포
+
+## 주요 기능
+
+![](https://i.imgur.com/KcsDIF6.png)
+![](https://i.imgur.com/IHEffSc.png)
+
+## 발표 자료 
+
+![img.png](img.png)
+
 
 # Getting Started with Create React App
 
