@@ -66,7 +66,7 @@ GitHub Pages를 사용한 배포
 
 ## 발표 자료 
 
-![img.png](img.png)
+![https://raw.githubusercontent.com/nklcb-capstone/vi-eco/master/img.png](img.png)
 
 
 # Getting Started with Create React App
